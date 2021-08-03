@@ -34,8 +34,6 @@ const converterSummary = {
     '`flow` found some issues. Run `yarn flow check` to analyze your code and address any errors.',
   shellcheck:
     '`shellcheck` found some issues. Run `yarn shellcheck` to analyze shell scripts.',
-  'google-java-format':
-    '`google-java-format` found some issues. See https://github.com/google/google-java-format',
 };
 
 /**
@@ -57,24 +55,6 @@ const converters = {
         push(output, key, message);
       });
     }
-  },
-
-  'google-java-format': function(output, input) {
-    if (!input) {
-      return;
-    }
-
-    input.forEach(function(change) {
-      push(output, change.file, {
-        message: `\`google-java-format\` suggested changes:
-\`\`\`diff
-${change.description}
-\`\`\`
-`,
-        line: change.line,
-        converter: 'google-java-format',
-      });
-    });
   },
 
   flow: function(output, input) {
@@ -133,6 +113,30 @@ ${change.description}
   },
 };
 
+function getShaFromPullRequest(octokit, owner, repo, number, callback) {
+  octokit.pullRequests.get({owner, repo, number}, (error, res) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    callback(res.data.head.sha);
+  });
+}
+
+function getFilesFromPullRequest(octokit, owner, repo, number, callback) {
+  octokit.pullRequests.listFiles(
+    {owner, repo, number, per_page: 100},
+    (error, res) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      callback(res.data);
+    },
+  );
+}
+
 /**
  * Sadly we can't just give the line number to github, we have to give the
  * line number relative to the patch file which is super annoying. This
@@ -162,15 +166,7 @@ function getLineMapFromPatch(patchString) {
   return lineMap;
 }
 
-async function sendReview(
-  octokit,
-  owner,
-  repo,
-  pull_number,
-  commit_id,
-  body,
-  comments,
-) {
+function sendReview(octokit, owner, repo, number, commit_id, body, comments) {
   if (process.env.GITHUB_TOKEN) {
     if (comments.length === 0) {
       // Do not leave an empty review.
@@ -185,14 +181,19 @@ async function sendReview(
     const opts = {
       owner,
       repo,
-      pull_number,
+      number,
       commit_id,
       body,
       event,
       comments,
     };
 
-    await octokit.pulls.createReview(opts);
+    octokit.pullRequests.createReview(opts, function(error, res) {
+      if (error) {
+        console.error(error);
+        return;
+      }
+    });
   } else {
     if (comments.length === 0) {
       console.log('No issues found.');
@@ -215,7 +216,7 @@ async function sendReview(
   }
 }
 
-async function main(messages, owner, repo, pull_number) {
+function main(messages, owner, repo, number) {
   // No message, we don't need to do anything :)
   if (Object.keys(messages).length === 0) {
     return;
@@ -233,54 +234,40 @@ async function main(messages, owner, repo, pull_number) {
     auth: process.env.GITHUB_TOKEN,
   });
 
-  const opts = {
-    owner,
-    repo,
-    pull_number,
-  };
+  getShaFromPullRequest(octokit, owner, repo, number, sha => {
+    getFilesFromPullRequest(octokit, owner, repo, number, files => {
+      let comments = [];
+      let convertersUsed = [];
+      files
+        .filter(file => messages[file.filename])
+        .forEach(file => {
+          // github api sometimes does not return a patch on large commits
+          if (!file.patch) {
+            return;
+          }
+          const lineMap = getLineMapFromPatch(file.patch);
+          messages[file.filename].forEach(message => {
+            if (lineMap[message.line]) {
+              const comment = {
+                path: file.filename,
+                position: lineMap[message.line],
+                body: message.message,
+              };
+              convertersUsed.push(message.converter);
+              comments.push(comment);
+            }
+          }); // forEach
+        }); // filter
 
-  const {data: pull} = await octokit.pulls.get(opts);
-  const {data: files} = await octokit.pulls.listFiles(opts);
+      let body = '**Code analysis results:**\n\n';
+      const uniqueconvertersUsed = [...new Set(convertersUsed)];
+      uniqueconvertersUsed.forEach(converter => {
+        body += '* ' + converterSummary[converter] + '\n';
+      });
 
-  const comments = [];
-  const convertersUsed = [];
-
-  files
-    .filter(file => messages[file.filename])
-    .forEach(file => {
-      // github api sometimes does not return a patch on large commits
-      if (!file.patch) {
-        return;
-      }
-      const lineMap = getLineMapFromPatch(file.patch);
-      messages[file.filename].forEach(message => {
-        if (lineMap[message.line]) {
-          const comment = {
-            path: file.filename,
-            position: lineMap[message.line],
-            body: message.message,
-          };
-          convertersUsed.push(message.converter);
-          comments.push(comment);
-        }
-      }); // forEach
-    }); // filter
-
-  let body = '**Code analysis results:**\n\n';
-  const uniqueconvertersUsed = [...new Set(convertersUsed)];
-  uniqueconvertersUsed.forEach(converter => {
-    body += '* ' + converterSummary[converter] + '\n';
-  });
-
-  await sendReview(
-    octokit,
-    owner,
-    repo,
-    pull_number,
-    pull.head.sha,
-    body,
-    comments,
-  );
+      sendReview(octokit, owner, repo, number, sha, body, comments);
+    }); // getFilesFromPullRequest
+  }); // getShaFromPullRequest
 }
 
 let content = '';
@@ -344,7 +331,6 @@ process.stdin.on('end', function() {
 
   const number = process.env.GITHUB_PR_NUMBER;
 
-  (async () => {
-    await main(messages, owner, repo, number);
-  })();
+  // intentional lint warning to make sure that the bot is working :)
+  main(messages, owner, repo, number);
 });

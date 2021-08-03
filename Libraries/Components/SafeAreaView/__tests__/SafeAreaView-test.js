@@ -12,7 +12,7 @@
 'use strict';
 
 const React = require('react');
-import SafeAreaView from '../SafeAreaView';
+const SafeAreaView = require('../SafeAreaView');
 const ReactNativeTestTools = require('../../../Utilities/ReactNativeTestTools');
 const View = require('../../View/View');
 const Text = require('../../../Text/Text');

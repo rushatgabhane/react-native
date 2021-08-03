@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
  * @emails oncall+react_native
  */
 
@@ -38,6 +37,18 @@ describe('VirtualizedSectionList', () => {
         renderItem={({item}) => <item value={item.key} />}
         getItem={(data, key) => data[key]}
         getItemCount={data => data.length}
+      />,
+    );
+    expect(component).toMatchSnapshot();
+  });
+
+  it('renders null list', () => {
+    const component = ReactTestRenderer.create(
+      <VirtualizedSectionList
+        sections={undefined}
+        renderItem={({item}) => <item value={item.key} />}
+        getItem={(data, key) => data[key]}
+        getItemCount={data => 0}
       />,
     );
     expect(component).toMatchSnapshot();
@@ -86,11 +97,7 @@ describe('VirtualizedSectionList', () => {
         ]}
         getItem={(data, key) => data[key]}
         getItemCount={data => data.length}
-        getItemLayout={({index}) => ({
-          index: -1,
-          length: 50,
-          offset: index * 50,
-        })}
+        getItemLayout={({index}) => ({length: 50, offset: index * 50})}
         inverted={true}
         keyExtractor={(item, index) => item.id}
         onRefresh={jest.fn()}
@@ -103,37 +110,26 @@ describe('VirtualizedSectionList', () => {
 
   it('handles separators correctly', () => {
     const infos = [];
-    let component;
-    ReactTestRenderer.act(() => {
-      component = ReactTestRenderer.create(
-        <VirtualizedSectionList
-          ItemSeparatorComponent={props => <separator {...props} />}
-          sections={[
-            {title: 's0', data: [{key: 'i0'}, {key: 'i1'}, {key: 'i2'}]},
-          ]}
-          renderItem={info => {
-            infos.push(info);
-            return <item title={info.item.key} />;
-          }}
-          getItem={(data, key) => data[key]}
-          getItemCount={data => data.length}
-        />,
-      );
-    });
+    const component = ReactTestRenderer.create(
+      <VirtualizedSectionList
+        ItemSeparatorComponent={props => <separator {...props} />}
+        sections={[
+          {title: 's0', data: [{key: 'i0'}, {key: 'i1'}, {key: 'i2'}]},
+        ]}
+        renderItem={info => {
+          infos.push(info);
+          return <item title={info.item.key} />;
+        }}
+        getItem={(data, key) => data[key]}
+        getItemCount={data => data.length}
+      />,
+    );
     expect(component).toMatchSnapshot();
-
-    ReactTestRenderer.act(() => {
-      infos[1].separators.highlight();
-    });
+    infos[1].separators.highlight();
     expect(component).toMatchSnapshot();
-    ReactTestRenderer.act(() => {
-      infos[2].separators.updateProps('leading', {press: true});
-    });
+    infos[2].separators.updateProps('leading', {press: true});
     expect(component).toMatchSnapshot();
-    ReactTestRenderer.act(() => {
-      infos[1].separators.unhighlight();
-    });
-    expect(component).toMatchSnapshot();
+    infos[1].separators.unhighlight();
   });
 
   it('handles nested lists', () => {
@@ -189,11 +185,7 @@ describe('VirtualizedSectionList', () => {
       );
       const instance = component.getInstance();
       const spy = jest.fn();
-
-      // $FlowFixMe[incompatible-use] wrong types
-      // $FlowFixMe[prop-missing] wrong types
       instance._listRef.scrollToIndex = spy;
-
       return {
         instance,
         spy,
@@ -207,8 +199,7 @@ describe('VirtualizedSectionList', () => {
 
       const viewOffset = 25;
 
-      // $FlowFixMe[prop-missing] scrollToLocation isn't on instance
-      instance?.scrollToLocation({
+      instance.scrollToLocation({
         sectionIndex: 0,
         itemIndex: 1,
         viewOffset,
@@ -258,8 +249,8 @@ describe('VirtualizedSectionList', () => {
       'given sectionIndex, itemIndex and viewOffset, scrollToIndex is called with correct params',
       (scrollToLocationParams, expected) => {
         const {instance, spy} = createVirtualizedSectionList();
-        // $FlowFixMe[prop-missing] scrollToLocation not on instance
-        instance?.scrollToLocation(scrollToLocationParams);
+
+        instance.scrollToLocation(scrollToLocationParams);
         expect(spy).toHaveBeenCalledWith(expected);
       },
     );

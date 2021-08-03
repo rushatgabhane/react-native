@@ -36,6 +36,7 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import com.facebook.common.logging.FLog;
 import com.facebook.infer.annotation.Assertions;
@@ -43,9 +44,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactSoftException;
 import com.facebook.react.common.build.ReactBuildConfig;
 import com.facebook.react.uimanager.FabricViewStateManager;
-import com.facebook.react.uimanager.ReactAccessibilityDelegate;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.text.CustomLetterSpacingSpan;
 import com.facebook.react.views.text.CustomLineHeightSpan;
 import com.facebook.react.views.text.CustomStyleSpan;
@@ -107,8 +106,8 @@ public class ReactEditText extends AppCompatEditText
   private TextAttributes mTextAttributes;
   private boolean mTypefaceDirty = false;
   private @Nullable String mFontFamily = null;
-  private int mFontWeight = UNSET;
-  private int mFontStyle = UNSET;
+  private int mFontWeight = ReactTypefaceUtils.UNSET;
+  private int mFontStyle = ReactTypefaceUtils.UNSET;
   private boolean mAutoFocus = false;
   private boolean mDidAttachToWindow = false;
 
@@ -120,7 +119,6 @@ public class ReactEditText extends AppCompatEditText
   protected boolean mIsSettingTextFromState = false;
 
   private static final KeyListener sKeyListener = QwertyKeyListener.getInstanceForFullKeyboard();
-  private @Nullable EventDispatcher mEventDispatcher;
 
   public ReactEditText(Context context) {
     super(context);
@@ -155,7 +153,7 @@ public class ReactEditText extends AppCompatEditText
 
     ViewCompat.setAccessibilityDelegate(
         this,
-        new ReactAccessibilityDelegate() {
+        new AccessibilityDelegateCompat() {
           @Override
           public boolean performAccessibilityAction(View host, int action, Bundle args) {
             if (action == AccessibilityNodeInfo.ACTION_CLICK) {
@@ -249,8 +247,7 @@ public class ReactEditText extends AppCompatEditText
     InputConnection inputConnection = super.onCreateInputConnection(outAttrs);
     if (inputConnection != null && mOnKeyPress) {
       inputConnection =
-          new ReactEditTextInputConnectionWrapper(
-              inputConnection, reactContext, this, mEventDispatcher);
+          new ReactEditTextInputConnectionWrapper(inputConnection, reactContext, this);
     }
 
     if (isMultiline() && getBlurOnSubmit()) {
@@ -331,18 +328,8 @@ public class ReactEditText extends AppCompatEditText
     }
 
     if (start != UNSET && end != UNSET) {
-      // clamp selection values for safety
-      start = clampToTextLength(start);
-      end = clampToTextLength(end);
-
       setSelection(start, end);
     }
-  }
-
-  private int clampToTextLength(int value) {
-    int textLength = getText() == null ? 0 : getText().length();
-
-    return Math.max(0, Math.min(value, textLength));
   }
 
   @Override
@@ -432,10 +419,11 @@ public class ReactEditText extends AppCompatEditText
   @Override
   public void setInputType(int type) {
     Typeface tf = super.getTypeface();
-    super.setInputType(type);
-    mStagedInputType = type;
     // Input type password defaults to monospace font, so we need to re-apply the font
     super.setTypeface(tf);
+
+    super.setInputType(type);
+    mStagedInputType = type;
 
     /**
      * If set forces multiline on input, because of a restriction on Android source that enables
@@ -667,10 +655,12 @@ public class ReactEditText extends AppCompatEditText
 
     List<TextLayoutManager.SetSpanOperation> ops = new ArrayList<>();
 
-    if (!Float.isNaN(mTextAttributes.getLetterSpacing())) {
-      ops.add(
-          new TextLayoutManager.SetSpanOperation(
-              start, end, new CustomLetterSpacingSpan(mTextAttributes.getLetterSpacing())));
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      if (!Float.isNaN(mTextAttributes.getLetterSpacing())) {
+        ops.add(
+            new TextLayoutManager.SetSpanOperation(
+                start, end, new CustomLetterSpacingSpan(mTextAttributes.getLetterSpacing())));
+      }
     }
     ops.add(
         new TextLayoutManager.SetSpanOperation(
@@ -744,9 +734,8 @@ public class ReactEditText extends AppCompatEditText
     // wrapper 100% of the time.
     // Since the LocalData object is constructed by getting values from the underlying EditText
     // view, we don't need to construct one or apply it at all - it provides no use in Fabric.
-    ReactContext reactContext = getReactContext(this);
-
-    if (!mFabricViewStateManager.hasStateWrapper() && !reactContext.isBridgeless()) {
+    if (!mFabricViewStateManager.hasStateWrapper()) {
+      ReactContext reactContext = getReactContext(this);
       final ReactTextInputLocalData localData = new ReactTextInputLocalData(this);
       UIManagerModule uiManager = reactContext.getNativeModule(UIManagerModule.class);
       if (uiManager != null) {
@@ -959,9 +948,11 @@ public class ReactEditText extends AppCompatEditText
     // `Float.NaN`.
     setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextAttributes.getEffectiveFontSize());
 
-    float effectiveLetterSpacing = mTextAttributes.getEffectiveLetterSpacing();
-    if (!Float.isNaN(effectiveLetterSpacing)) {
-      setLetterSpacing(effectiveLetterSpacing);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      float effectiveLetterSpacing = mTextAttributes.getEffectiveLetterSpacing();
+      if (!Float.isNaN(effectiveLetterSpacing)) {
+        setLetterSpacing(effectiveLetterSpacing);
+      }
     }
   }
 
@@ -1055,10 +1046,6 @@ public class ReactEditText extends AppCompatEditText
     }
 
     TextLayoutManager.setCachedSpannabledForTag(getId(), sb);
-  }
-
-  void setEventDispatcher(@Nullable EventDispatcher eventDispatcher) {
-    mEventDispatcher = eventDispatcher;
   }
 
   /**

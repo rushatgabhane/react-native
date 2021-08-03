@@ -97,46 +97,36 @@ class TimersTest extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setTimeout(this.testSetTimeout0, 1000);
   }
 
   testSetTimeout0() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setTimeout(this.testSetTimeout1, 0);
   }
 
   testSetTimeout1() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setTimeout(this.testSetTimeout50, 1);
   }
 
   testSetTimeout50() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setTimeout(this.testRequestAnimationFrame, 50);
   }
 
   testRequestAnimationFrame() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.requestAnimationFrame(this.testSetInterval0);
   }
 
   testSetInterval0() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this._nextTest = this.testSetInterval20;
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this._interval = this.setInterval(this._incrementInterval, 0);
   }
 
   testSetInterval20() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this._nextTest = this.testSetImmediate;
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this._interval = this.setInterval(this._incrementInterval, 20);
   }
 
   testSetImmediate() {
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setImmediate(this.testClearTimeout0);
   }
 
@@ -149,7 +139,6 @@ class TimersTest extends React.Component<Props, State> {
   testClearTimeout30() {
     const timeout = this.setTimeout(() => this._fail('testClearTimeout30'), 30);
     this.clearTimeout(timeout);
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setTimeout(this.testClearMulti, 50);
   }
 
@@ -167,7 +156,6 @@ class TimersTest extends React.Component<Props, State> {
     fails.forEach(timeout => this.clearTimeout(timeout));
     this.setTimeout(() => this.clearTimeout(delayClear), 20);
 
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setTimeout(this.testOrdering, 50);
   }
 
@@ -203,7 +191,6 @@ class TimersTest extends React.Component<Props, State> {
         ),
       25,
     );
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     this.setTimeout(this.done, 50);
   }
 
@@ -262,7 +249,6 @@ class TimersTest extends React.Component<Props, State> {
         this.clearInterval(this._interval);
         this._interval = null;
       }
-      // $FlowFixMe[method-unbinding]
       this.setState({count: 0}, this._nextTest);
       return;
     }
@@ -281,5 +267,4 @@ const styles = StyleSheet.create({
   },
 });
 
-TimersTest.displayName = 'TimersTest';
 module.exports = TimersTest;

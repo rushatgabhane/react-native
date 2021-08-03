@@ -10,10 +10,10 @@
 
 'use strict';
 
-import * as React from 'react';
-import ReactTestRenderer from 'react-test-renderer';
+const React = require('react');
+const ReactTestRenderer = require('react-test-renderer');
 
-import SectionList from '../SectionList';
+const SectionList = require('../SectionList');
 
 describe('SectionList', () => {
   it('renders empty list', () => {

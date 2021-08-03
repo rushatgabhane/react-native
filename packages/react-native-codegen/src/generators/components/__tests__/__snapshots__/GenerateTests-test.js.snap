@@ -12,7 +12,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/ARRAY_PROPS/Props.h>
 #include <react/renderer/components/image/conversions.h>
 #include <react/renderer/core/RawProps.h>
@@ -26,12 +25,8 @@ TEST(ArrayPropsNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<ArrayPropsNativeComponentProps>();
   auto const &sourceProps = ArrayPropsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ArrayPropsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ArrayPropsNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -48,7 +43,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/ARRAY_PROPS_WITH_NESTED_OBJECT/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -61,12 +55,8 @@ TEST(ArrayPropsNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<ArrayPropsNativeComponentProps>();
   auto const &sourceProps = ArrayPropsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ArrayPropsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ArrayPropsNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -83,7 +73,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/BOOLEAN_PROP/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -96,12 +85,8 @@ TEST(BooleanPropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<BooleanPropNativeComponentProps>();
   auto const &sourceProps = BooleanPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  BooleanPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  BooleanPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(BooleanPropNativeComponentProps_disabled, etc) {
@@ -109,12 +94,8 @@ TEST(BooleanPropNativeComponentProps_disabled, etc) {
   propParser.prepare<BooleanPropNativeComponentProps>();
   auto const &sourceProps = BooleanPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"disabled\\", false));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  BooleanPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  BooleanPropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -131,7 +112,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/COLOR_PROP/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -144,12 +124,8 @@ TEST(ColorPropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<ColorPropNativeComponentProps>();
   auto const &sourceProps = ColorPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ColorPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ColorPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(ColorPropNativeComponentProps_tintColor, etc) {
@@ -157,12 +133,8 @@ TEST(ColorPropNativeComponentProps_tintColor, etc) {
   propParser.prepare<ColorPropNativeComponentProps>();
   auto const &sourceProps = ColorPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"tintColor\\", 1));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ColorPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ColorPropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -179,7 +151,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/COMMANDS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -192,12 +163,8 @@ TEST(CommandNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<CommandNativeComponentProps>();
   auto const &sourceProps = CommandNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  CommandNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  CommandNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -214,7 +181,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/COMMANDS_AND_PROPS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -227,12 +193,8 @@ TEST(CommandNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<CommandNativeComponentProps>();
   auto const &sourceProps = CommandNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  CommandNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  CommandNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(CommandNativeComponentProps_accessibilityHint, etc) {
@@ -240,12 +202,8 @@ TEST(CommandNativeComponentProps_accessibilityHint, etc) {
   propParser.prepare<CommandNativeComponentProps>();
   auto const &sourceProps = CommandNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"accessibilityHint\\", \\"foo\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  CommandNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  CommandNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -262,7 +220,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/DOUBLE_PROPS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -275,12 +232,8 @@ TEST(DoublePropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<DoublePropNativeComponentProps>();
   auto const &sourceProps = DoublePropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  DoublePropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  DoublePropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -297,7 +250,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/EVENT_NESTED_OBJECT_PROPS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -310,12 +262,8 @@ TEST(EventsNestedObjectNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<EventsNestedObjectNativeComponentProps>();
   auto const &sourceProps = EventsNestedObjectNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  EventsNestedObjectNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  EventsNestedObjectNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(EventsNestedObjectNativeComponentProps_disabled, etc) {
@@ -323,12 +271,8 @@ TEST(EventsNestedObjectNativeComponentProps_disabled, etc) {
   propParser.prepare<EventsNestedObjectNativeComponentProps>();
   auto const &sourceProps = EventsNestedObjectNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"disabled\\", false));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  EventsNestedObjectNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  EventsNestedObjectNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -345,7 +289,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/EVENT_PROPS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -358,12 +301,8 @@ TEST(EventsNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<EventsNativeComponentProps>();
   auto const &sourceProps = EventsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  EventsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  EventsNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(EventsNativeComponentProps_disabled, etc) {
@@ -371,12 +310,8 @@ TEST(EventsNativeComponentProps_disabled, etc) {
   propParser.prepare<EventsNativeComponentProps>();
   auto const &sourceProps = EventsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"disabled\\", false));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  EventsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  EventsNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -393,7 +328,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/EVENTS_WITH_PAPER_NAME/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -406,12 +340,8 @@ TEST(InterfaceOnlyComponentProps_DoesNotDie, etc) {
   propParser.prepare<InterfaceOnlyComponentProps>();
   auto const &sourceProps = InterfaceOnlyComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  InterfaceOnlyComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  InterfaceOnlyComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -428,7 +358,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/EXCLUDE_ANDROID/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -441,12 +370,8 @@ TEST(ExcludedAndroidComponentProps_DoesNotDie, etc) {
   propParser.prepare<ExcludedAndroidComponentProps>();
   auto const &sourceProps = ExcludedAndroidComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ExcludedAndroidComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ExcludedAndroidComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -463,7 +388,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/EXCLUDE_ANDROID_IOS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -476,12 +400,8 @@ TEST(ExcludedAndroidIosComponentProps_DoesNotDie, etc) {
   propParser.prepare<ExcludedAndroidIosComponentProps>();
   auto const &sourceProps = ExcludedAndroidIosComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ExcludedAndroidIosComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ExcludedAndroidIosComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -498,7 +418,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/FLOAT_PROPS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -511,12 +430,8 @@ TEST(FloatPropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<FloatPropNativeComponentProps>();
   auto const &sourceProps = FloatPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  FloatPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  FloatPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(FloatPropNativeComponentProps_blurRadius, etc) {
@@ -524,12 +439,8 @@ TEST(FloatPropNativeComponentProps_blurRadius, etc) {
   propParser.prepare<FloatPropNativeComponentProps>();
   auto const &sourceProps = FloatPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"blurRadius\\", 0));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  FloatPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  FloatPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(FloatPropNativeComponentProps_blurRadius2, etc) {
@@ -537,12 +448,8 @@ TEST(FloatPropNativeComponentProps_blurRadius2, etc) {
   propParser.prepare<FloatPropNativeComponentProps>();
   auto const &sourceProps = FloatPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"blurRadius2\\", 0.001));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  FloatPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  FloatPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(FloatPropNativeComponentProps_blurRadius3, etc) {
@@ -550,12 +457,8 @@ TEST(FloatPropNativeComponentProps_blurRadius3, etc) {
   propParser.prepare<FloatPropNativeComponentProps>();
   auto const &sourceProps = FloatPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"blurRadius3\\", 2.1));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  FloatPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  FloatPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(FloatPropNativeComponentProps_blurRadius4, etc) {
@@ -563,12 +466,8 @@ TEST(FloatPropNativeComponentProps_blurRadius4, etc) {
   propParser.prepare<FloatPropNativeComponentProps>();
   auto const &sourceProps = FloatPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"blurRadius4\\", 0));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  FloatPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  FloatPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(FloatPropNativeComponentProps_blurRadius5, etc) {
@@ -576,12 +475,8 @@ TEST(FloatPropNativeComponentProps_blurRadius5, etc) {
   propParser.prepare<FloatPropNativeComponentProps>();
   auto const &sourceProps = FloatPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"blurRadius5\\", 1));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  FloatPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  FloatPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(FloatPropNativeComponentProps_blurRadius6, etc) {
@@ -589,12 +484,8 @@ TEST(FloatPropNativeComponentProps_blurRadius6, etc) {
   propParser.prepare<FloatPropNativeComponentProps>();
   auto const &sourceProps = FloatPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"blurRadius6\\", 0));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  FloatPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  FloatPropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -611,7 +502,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/IMAGE_PROP/Props.h>
 #include <react/renderer/components/image/conversions.h>
 #include <react/renderer/core/RawProps.h>
@@ -625,12 +515,8 @@ TEST(ImagePropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<ImagePropNativeComponentProps>();
   auto const &sourceProps = ImagePropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ImagePropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ImagePropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(ImagePropNativeComponentProps_thumbImage, etc) {
@@ -638,12 +524,8 @@ TEST(ImagePropNativeComponentProps_thumbImage, etc) {
   propParser.prepare<ImagePropNativeComponentProps>();
   auto const &sourceProps = ImagePropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"thumbImage\\", folly::dynamic::object(\\"url\\", \\"testurl\\")));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ImagePropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ImagePropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -660,7 +542,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/INSETS_PROP/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -673,12 +554,8 @@ TEST(InsetsPropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<InsetsPropNativeComponentProps>();
   auto const &sourceProps = InsetsPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  InsetsPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  InsetsPropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -695,7 +572,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/INT32_ENUM_PROP/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -708,12 +584,8 @@ TEST(Int32EnumPropsNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<Int32EnumPropsNativeComponentProps>();
   auto const &sourceProps = Int32EnumPropsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  Int32EnumPropsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  Int32EnumPropsNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -730,7 +602,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/INTEGER_PROPS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -743,12 +614,8 @@ TEST(IntegerPropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<IntegerPropNativeComponentProps>();
   auto const &sourceProps = IntegerPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  IntegerPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  IntegerPropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -765,7 +632,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/INTERFACE_ONLY/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -778,12 +644,8 @@ TEST(InterfaceOnlyComponentProps_DoesNotDie, etc) {
   propParser.prepare<InterfaceOnlyComponentProps>();
   auto const &sourceProps = InterfaceOnlyComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  InterfaceOnlyComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  InterfaceOnlyComponentProps(sourceProps, rawProps);
 }
 
 TEST(InterfaceOnlyComponentProps_accessibilityHint, etc) {
@@ -791,12 +653,8 @@ TEST(InterfaceOnlyComponentProps_accessibilityHint, etc) {
   propParser.prepare<InterfaceOnlyComponentProps>();
   auto const &sourceProps = InterfaceOnlyComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"accessibilityHint\\", \\"foo\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  InterfaceOnlyComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  InterfaceOnlyComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -813,7 +671,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/MULTI_NATIVE_PROP/Props.h>
 #include <react/renderer/components/image/conversions.h>
 #include <react/renderer/core/RawProps.h>
@@ -827,12 +684,8 @@ TEST(ImageColorPropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<ImageColorPropNativeComponentProps>();
   auto const &sourceProps = ImageColorPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ImageColorPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ImageColorPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(ImageColorPropNativeComponentProps_thumbImage, etc) {
@@ -840,12 +693,8 @@ TEST(ImageColorPropNativeComponentProps_thumbImage, etc) {
   propParser.prepare<ImageColorPropNativeComponentProps>();
   auto const &sourceProps = ImageColorPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"thumbImage\\", folly::dynamic::object(\\"url\\", \\"testurl\\")));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ImageColorPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ImageColorPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(ImageColorPropNativeComponentProps_color, etc) {
@@ -853,12 +702,8 @@ TEST(ImageColorPropNativeComponentProps_color, etc) {
   propParser.prepare<ImageColorPropNativeComponentProps>();
   auto const &sourceProps = ImageColorPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"color\\", 1));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ImageColorPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ImageColorPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(ImageColorPropNativeComponentProps_thumbTintColor, etc) {
@@ -866,12 +711,8 @@ TEST(ImageColorPropNativeComponentProps_thumbTintColor, etc) {
   propParser.prepare<ImageColorPropNativeComponentProps>();
   auto const &sourceProps = ImageColorPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"thumbTintColor\\", 1));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ImageColorPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ImageColorPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(ImageColorPropNativeComponentProps_point, etc) {
@@ -879,12 +720,8 @@ TEST(ImageColorPropNativeComponentProps_point, etc) {
   propParser.prepare<ImageColorPropNativeComponentProps>();
   auto const &sourceProps = ImageColorPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"point\\", folly::dynamic::object(\\"x\\", 1)(\\"y\\", 1)));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ImageColorPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ImageColorPropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -901,7 +738,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/NO_PROPS_NO_EVENTS/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -914,12 +750,8 @@ TEST(NoPropsNoEventsComponentProps_DoesNotDie, etc) {
   propParser.prepare<NoPropsNoEventsComponentProps>();
   auto const &sourceProps = NoPropsNoEventsComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  NoPropsNoEventsComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  NoPropsNoEventsComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -936,7 +768,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/OBJECT_PROPS/Props.h>
 #include <react/renderer/components/image/conversions.h>
 #include <react/renderer/core/RawProps.h>
@@ -950,12 +781,8 @@ TEST(ObjectPropsProps_DoesNotDie, etc) {
   propParser.prepare<ObjectPropsProps>();
   auto const &sourceProps = ObjectPropsProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  ObjectPropsProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  ObjectPropsProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -972,7 +799,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/POINT_PROP/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -985,12 +811,8 @@ TEST(PointPropNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<PointPropNativeComponentProps>();
   auto const &sourceProps = PointPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  PointPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  PointPropNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(PointPropNativeComponentProps_startPoint, etc) {
@@ -998,12 +820,8 @@ TEST(PointPropNativeComponentProps_startPoint, etc) {
   propParser.prepare<PointPropNativeComponentProps>();
   auto const &sourceProps = PointPropNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"startPoint\\", folly::dynamic::object(\\"x\\", 1)(\\"y\\", 1)));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  PointPropNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  PointPropNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -1020,7 +838,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/STRING_ENUM_PROP/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -1033,12 +850,8 @@ TEST(StringEnumPropsNativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<StringEnumPropsNativeComponentProps>();
   auto const &sourceProps = StringEnumPropsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  StringEnumPropsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  StringEnumPropsNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(StringEnumPropsNativeComponentProps_alignment_Top, etc) {
@@ -1046,12 +859,8 @@ TEST(StringEnumPropsNativeComponentProps_alignment_Top, etc) {
   propParser.prepare<StringEnumPropsNativeComponentProps>();
   auto const &sourceProps = StringEnumPropsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"alignment\\", \\"top\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  StringEnumPropsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  StringEnumPropsNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(StringEnumPropsNativeComponentProps_alignment_Center, etc) {
@@ -1059,12 +868,8 @@ TEST(StringEnumPropsNativeComponentProps_alignment_Center, etc) {
   propParser.prepare<StringEnumPropsNativeComponentProps>();
   auto const &sourceProps = StringEnumPropsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"alignment\\", \\"center\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  StringEnumPropsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  StringEnumPropsNativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(StringEnumPropsNativeComponentProps_alignment_BottomRight, etc) {
@@ -1072,12 +877,8 @@ TEST(StringEnumPropsNativeComponentProps_alignment_BottomRight, etc) {
   propParser.prepare<StringEnumPropsNativeComponentProps>();
   auto const &sourceProps = StringEnumPropsNativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"alignment\\", \\"bottom-right\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  StringEnumPropsNativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  StringEnumPropsNativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -1094,7 +895,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/STRING_PROP/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -1107,12 +907,8 @@ TEST(StringPropComponentProps_DoesNotDie, etc) {
   propParser.prepare<StringPropComponentProps>();
   auto const &sourceProps = StringPropComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  StringPropComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  StringPropComponentProps(sourceProps, rawProps);
 }
 
 TEST(StringPropComponentProps_accessibilityHint, etc) {
@@ -1120,12 +916,8 @@ TEST(StringPropComponentProps_accessibilityHint, etc) {
   propParser.prepare<StringPropComponentProps>();
   auto const &sourceProps = StringPropComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"accessibilityHint\\", \\"foo\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  StringPropComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  StringPropComponentProps(sourceProps, rawProps);
 }
 
 TEST(StringPropComponentProps_accessibilityRole, etc) {
@@ -1133,12 +925,8 @@ TEST(StringPropComponentProps_accessibilityRole, etc) {
   propParser.prepare<StringPropComponentProps>();
   auto const &sourceProps = StringPropComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"accessibilityRole\\", \\"foo\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  StringPropComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  StringPropComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -1155,7 +943,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/TWO_COMPONENTS_DIFFERENT_FILES/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -1168,12 +955,8 @@ TEST(MultiFile1NativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<MultiFile1NativeComponentProps>();
   auto const &sourceProps = MultiFile1NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiFile1NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiFile1NativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(MultiFile1NativeComponentProps_disabled, etc) {
@@ -1181,12 +964,8 @@ TEST(MultiFile1NativeComponentProps_disabled, etc) {
   propParser.prepare<MultiFile1NativeComponentProps>();
   auto const &sourceProps = MultiFile1NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"disabled\\", false));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiFile1NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiFile1NativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(MultiFile2NativeComponentProps_DoesNotDie, etc) {
@@ -1194,12 +973,8 @@ TEST(MultiFile2NativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<MultiFile2NativeComponentProps>();
   auto const &sourceProps = MultiFile2NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiFile2NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiFile2NativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(MultiFile2NativeComponentProps_disabled, etc) {
@@ -1207,12 +982,8 @@ TEST(MultiFile2NativeComponentProps_disabled, etc) {
   propParser.prepare<MultiFile2NativeComponentProps>();
   auto const &sourceProps = MultiFile2NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"disabled\\", true));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiFile2NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiFile2NativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;
@@ -1229,7 +1000,6 @@ Map {
  * */
 
 #include <gtest/gtest.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/components/TWO_COMPONENTS_SAME_FILE/Props.h>
 #include <react/renderer/core/RawProps.h>
 #include <react/renderer/core/RawPropsParser.h>
@@ -1242,12 +1012,8 @@ TEST(MultiComponent1NativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<MultiComponent1NativeComponentProps>();
   auto const &sourceProps = MultiComponent1NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiComponent1NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiComponent1NativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(MultiComponent1NativeComponentProps_disabled, etc) {
@@ -1255,12 +1021,8 @@ TEST(MultiComponent1NativeComponentProps_disabled, etc) {
   propParser.prepare<MultiComponent1NativeComponentProps>();
   auto const &sourceProps = MultiComponent1NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"disabled\\", false));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiComponent1NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiComponent1NativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(MultiComponent2NativeComponentProps_DoesNotDie, etc) {
@@ -1268,12 +1030,8 @@ TEST(MultiComponent2NativeComponentProps_DoesNotDie, etc) {
   propParser.prepare<MultiComponent2NativeComponentProps>();
   auto const &sourceProps = MultiComponent2NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"xx_invalid_xx\\", \\"xx_invalid_xx\\"));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiComponent2NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiComponent2NativeComponentProps(sourceProps, rawProps);
 }
 
 TEST(MultiComponent2NativeComponentProps_disabled, etc) {
@@ -1281,12 +1039,8 @@ TEST(MultiComponent2NativeComponentProps_disabled, etc) {
   propParser.prepare<MultiComponent2NativeComponentProps>();
   auto const &sourceProps = MultiComponent2NativeComponentProps();
   auto const &rawProps = RawProps(folly::dynamic::object(\\"disabled\\", true));
-
-  ContextContainer contextContainer{};
-  PropsParserContext parserContext{-1, contextContainer};
-
-  rawProps.parse(propParser, parserContext);
-  MultiComponent2NativeComponentProps(parserContext, sourceProps, rawProps);
+  rawProps.parse(propParser);
+  MultiComponent2NativeComponentProps(sourceProps, rawProps);
 }",
 }
 `;

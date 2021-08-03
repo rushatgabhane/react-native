@@ -8,6 +8,7 @@
  * @flow strict-local
  */
 
+'use strict';
 import type {Node} from 'React';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import React, {Component} from 'react';

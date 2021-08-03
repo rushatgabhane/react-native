@@ -14,7 +14,6 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTJavaScriptExecutor.h>
 #import <React/RCTUtils.h>
-#import <React/RCTInitializing.h>
 
 @interface RCTTestInjectedModule : NSObject <RCTBridgeModule>
 @end
@@ -53,7 +52,7 @@ RCT_EXPORT_MODULE()
 @end
 
 
-@interface RCTTestCustomSetBridgeModule : NSObject <RCTBridgeModule, RCTInitializing>
+@interface RCTTestCustomSetBridgeModule : NSObject <RCTBridgeModule>
 
 @property (nonatomic, assign) BOOL setBridgeOnMainQueue;
 
@@ -66,8 +65,9 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_MODULE()
 
-- (void)initialize
+- (void)setBridge:(RCTBridge *)bridge
 {
+  _bridge = bridge;
   _setBridgeOnMainQueue = RCTIsMainQueue();
 }
 

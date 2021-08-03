@@ -12,23 +12,22 @@
 
 import type {
   EventTypeShape,
-  NamedShape,
-  CommandTypeAnnotation,
-  PropTypeAnnotation,
+  PropTypeShape,
+  CommandTypeShape,
   ExtendsPropsShape,
   SchemaType,
   OptionsShape,
 } from '../../../CodegenSchema.js';
 
-export type ComponentSchemaBuilderConfig = $ReadOnly<{
+export type ComponentSchemaBuilderConfig = $ReadOnly<{|
   filename: string,
   componentName: string,
   extendsProps: $ReadOnlyArray<ExtendsPropsShape>,
   events: $ReadOnlyArray<EventTypeShape>,
-  props: $ReadOnlyArray<NamedShape<PropTypeAnnotation>>,
-  commands: $ReadOnlyArray<NamedShape<CommandTypeAnnotation>>,
+  props: $ReadOnlyArray<PropTypeShape>,
+  commands: $ReadOnlyArray<CommandTypeShape>,
   options?: ?OptionsShape,
-}>;
+|}>;
 
 function wrapComponentSchema({
   filename,

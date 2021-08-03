@@ -10,7 +10,7 @@
 
 'use strict';
 
-import type {ExtendedError} from 'react-native/Libraries/Core/ExtendedError';
+import type {ExtendedError} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 const React = require('react');
 const ReactNative = require('react-native');

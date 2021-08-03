@@ -8,6 +8,8 @@
  * @flow
  */
 
+'use strict';
+
 const React = require('react');
 
 const {DeviceEventEmitter, Text, View} = require('react-native');

@@ -8,6 +8,8 @@
  * @flow strict-local
  */
 
+'use strict';
+
 import GlobalPerformanceLogger from '../GlobalPerformanceLogger';
 import createPerformanceLogger from '../createPerformanceLogger';
 import type {IPerformanceLogger} from '../createPerformanceLogger';

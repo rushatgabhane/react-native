@@ -11,11 +11,10 @@
 'use strict';
 
 import type {
-  NamedShape,
-  CommandTypeAnnotation,
+  CommandTypeShape,
   ComponentShape,
   SchemaType,
-  CommandParamTypeAnnotation,
+  CommandsFunctionTypeParamAnnotation,
 } from '../../CodegenSchema';
 
 type FilesOutput = Map<string, string>;
@@ -104,13 +103,11 @@ NS_ASSUME_NONNULL_BEGIN
 NS_ASSUME_NONNULL_END
 `.trim();
 
-type Param = NamedShape<CommandParamTypeAnnotation>;
-
-function getObjCParamType(param: Param): string {
+function getObjCParamType(param: CommandsFunctionTypeParamAnnotation): string {
   const {typeAnnotation} = param;
 
   switch (typeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (typeAnnotation.name) {
         case 'RootTag':
           return 'double';
@@ -134,11 +131,13 @@ function getObjCParamType(param: Param): string {
   }
 }
 
-function getObjCExpectedKindParamType(param: Param): string {
+function getObjCExpectedKindParamType(
+  param: CommandsFunctionTypeParamAnnotation,
+): string {
   const {typeAnnotation} = param;
 
   switch (typeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (typeAnnotation.name) {
         case 'RootTag':
           return '[NSNumber class]';
@@ -162,11 +161,13 @@ function getObjCExpectedKindParamType(param: Param): string {
   }
 }
 
-function getReadableExpectedKindParamType(param: Param): string {
+function getReadableExpectedKindParamType(
+  param: CommandsFunctionTypeParamAnnotation,
+): string {
   const {typeAnnotation} = param;
 
   switch (typeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (typeAnnotation.name) {
         case 'RootTag':
           return 'double';
@@ -191,13 +192,13 @@ function getReadableExpectedKindParamType(param: Param): string {
 }
 
 function getObjCRightHandAssignmentParamType(
-  param: Param,
+  param: CommandsFunctionTypeParamAnnotation,
   index: number,
 ): string {
   const {typeAnnotation} = param;
 
   switch (typeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (typeAnnotation.name) {
         case 'RootTag':
           return `[(NSNumber *)arg${index} doubleValue]`;
@@ -251,7 +252,7 @@ function generateProtocol(
 }
 
 function generateConvertAndValidateParam(
-  param: Param,
+  param: CommandsFunctionTypeParamAnnotation,
   index: number,
   componentName: string,
 ): string {
@@ -272,7 +273,7 @@ function generateConvertAndValidateParam(
 }
 
 function generateCommandIfCase(
-  command: NamedShape<CommandTypeAnnotation>,
+  command: CommandTypeShape,
   componentName: string,
 ) {
   const params = command.typeAnnotation.params;
@@ -323,8 +324,8 @@ module.exports = {
   generate(
     libraryName: string,
     schema: SchemaType,
+    moduleSpecName: string,
     packageName?: string,
-    assumeNonnull: boolean = false,
   ): FilesOutput {
     const fileName = 'RCTComponentViewHelpers.h';
 

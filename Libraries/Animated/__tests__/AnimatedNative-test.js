@@ -8,6 +8,8 @@
  * @emails oncall+react_native
  */
 
+'use strict';
+
 jest
   .clearAllMocks()
   .mock('../../BatchedBridge/NativeModules', () => ({

@@ -14,7 +14,6 @@
 #include <react/renderer/components/text/BaseTextProps.h>
 #include <react/renderer/components/view/ViewProps.h>
 #include <react/renderer/core/Props.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/core/propsConversions.h>
 #include <react/renderer/graphics/Color.h>
 #include <react/renderer/imagemanager/primitives.h>
@@ -26,10 +25,7 @@ namespace react {
 class TextInputProps final : public ViewProps, public BaseTextProps {
  public:
   TextInputProps() = default;
-  TextInputProps(
-      const PropsParserContext &context,
-      TextInputProps const &sourceProps,
-      RawProps const &rawProps);
+  TextInputProps(TextInputProps const &sourceProps, RawProps const &rawProps);
 
 #pragma mark - Props
 

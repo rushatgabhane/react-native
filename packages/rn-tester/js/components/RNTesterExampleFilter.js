@@ -8,6 +8,8 @@
  * @flow
  */
 
+'use strict';
+
 const React = require('react');
 const RNTesterListFilters = require('./RNTesterListFilters');
 const {
@@ -18,23 +20,24 @@ const {
   Image,
 } = require('react-native');
 import {RNTesterThemeContext} from './RNTesterTheme';
+import type {RNTesterExample} from '../types/RNTesterTypes';
 
 import type {SectionData} from '../types/RNTesterTypes';
 
-type Props<T> = {
+type Props = {
   filter: Function,
   render: Function,
   disableSearch?: boolean,
   testID?: string,
   hideFilterPills?: boolean,
   page: 'examples_page' | 'components_page' | 'bookmarks_page',
-  sections: $ReadOnlyArray<SectionData<T>>,
+  sections: SectionData[],
   ...
 };
 
 type State = {filter: string, category: string, ...};
 
-class RNTesterExampleFilter<T> extends React.Component<Props<T>, State> {
+class RNTesterExampleFilter extends React.Component<Props, State> {
   state: State = {filter: '', category: ''};
 
   render(): React.Node {
@@ -105,11 +108,7 @@ class RNTesterExampleFilter<T> extends React.Component<Props<T>, State> {
       <RNTesterThemeContext.Consumer>
         {theme => {
           return (
-            <View
-              style={[
-                styles.searchRow,
-                {backgroundColor: theme.BackgroundColor},
-              ]}>
+            <View style={[styles.searchRow, {backgroundColor: '#F3F8FF'}]}>
               <View style={styles.textInputStyle}>
                 <Image
                   source={require('../assets/search-icon.png')}
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
   },
   searchRow: {
     paddingHorizontal: 20,
-    paddingVertical: 6,
+    paddingVertical: 10,
     alignItems: 'center',
   },
   searchTextInput: {

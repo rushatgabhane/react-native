@@ -21,14 +21,9 @@ describe('GenerateModuleHObjCpp', () => {
       const fixture = fixtures[fixtureName];
 
       it(`can generate fixture ${fixtureName}`, () => {
-        const output = generator.generate(
-          fixtureName,
-          fixture,
-          'com.facebook.fbreact.specs',
-          false,
-        );
+        const output = generator.generate(fixtureName, fixture, 'SampleSpec');
         expect(
-          new Map([[`${fixtureName}.h`, output.get(`${fixtureName}.h`)]]),
+          new Map([['SampleSpec.h', output.get('SampleSpec.h')]]),
         ).toMatchSnapshot();
       });
     });

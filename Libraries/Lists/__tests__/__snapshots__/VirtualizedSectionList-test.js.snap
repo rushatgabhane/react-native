@@ -17,12 +17,16 @@ exports[`VirtualizedSectionList handles nested lists 1`] = `
       },
     ]
   }
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -30,6 +34,8 @@ exports[`VirtualizedSectionList handles nested lists 1`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View>
     <View
@@ -56,13 +62,16 @@ exports[`VirtualizedSectionList handles nested lists 1`] = `
             },
           ]
         }
+        disableVirtualization={false}
         getItem={[Function]}
         getItemCount={[Function]}
         horizontal={false}
+        initialNumToRender={10}
         keyExtractor={[Function]}
+        maxToRenderPerBatch={10}
         onContentSizeChange={[Function]}
+        onEndReachedThreshold={2}
         onLayout={[Function]}
-        onMomentumScrollBegin={[Function]}
         onMomentumScrollEnd={[Function]}
         onScroll={[Function]}
         onScrollBeginDrag={[Function]}
@@ -70,6 +79,8 @@ exports[`VirtualizedSectionList handles nested lists 1`] = `
         renderItem={[Function]}
         scrollEventThrottle={50}
         stickyHeaderIndices={Array []}
+        updateCellsBatchingPeriod={50}
+        windowSize={21}
       >
         <View
           onLayout={[Function]}
@@ -117,13 +128,16 @@ exports[`VirtualizedSectionList handles nested lists 1`] = `
             },
           ]
         }
+        disableVirtualization={false}
         getItem={[Function]}
         getItemCount={[Function]}
         horizontal={true}
+        initialNumToRender={10}
         keyExtractor={[Function]}
+        maxToRenderPerBatch={10}
         onContentSizeChange={[Function]}
+        onEndReachedThreshold={2}
         onLayout={[Function]}
-        onMomentumScrollBegin={[Function]}
         onMomentumScrollEnd={[Function]}
         onScroll={[Function]}
         onScrollBeginDrag={[Function]}
@@ -131,6 +145,8 @@ exports[`VirtualizedSectionList handles nested lists 1`] = `
         renderItem={[Function]}
         scrollEventThrottle={50}
         stickyHeaderIndices={Array []}
+        updateCellsBatchingPeriod={50}
+        windowSize={21}
       >
         <View>
           <View
@@ -216,12 +232,16 @@ exports[`VirtualizedSectionList handles separators correctly 1`] = `
       },
     ]
   }
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -229,6 +249,8 @@ exports[`VirtualizedSectionList handles separators correctly 1`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View>
     <View
@@ -349,12 +371,16 @@ exports[`VirtualizedSectionList handles separators correctly 2`] = `
       },
     ]
   }
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -362,6 +388,8 @@ exports[`VirtualizedSectionList handles separators correctly 2`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View>
     <View
@@ -482,12 +510,16 @@ exports[`VirtualizedSectionList handles separators correctly 3`] = `
       },
     ]
   }
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -495,6 +527,8 @@ exports[`VirtualizedSectionList handles separators correctly 3`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View>
     <View
@@ -550,140 +584,6 @@ exports[`VirtualizedSectionList handles separators correctly 3`] = `
         />
         <separator
           highlighted={true}
-          leadingItem={
-            Object {
-              "key": "i1",
-            }
-          }
-          press={true}
-          section={
-            Object {
-              "data": Array [
-                Object {
-                  "key": "i0",
-                },
-                Object {
-                  "key": "i1",
-                },
-                Object {
-                  "key": "i2",
-                },
-              ],
-              "title": "s0",
-            }
-          }
-          trailingItem={
-            Object {
-              "key": "i2",
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <item
-        title="i2"
-      />
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    />
-  </View>
-</RCTScrollView>
-`;
-
-exports[`VirtualizedSectionList handles separators correctly 4`] = `
-<RCTScrollView
-  data={
-    Array [
-      Object {
-        "data": Array [
-          Object {
-            "key": "i0",
-          },
-          Object {
-            "key": "i1",
-          },
-          Object {
-            "key": "i2",
-          },
-        ],
-        "title": "s0",
-      },
-    ]
-  }
-  getItem={[Function]}
-  getItemCount={[Function]}
-  keyExtractor={[Function]}
-  onContentSizeChange={[Function]}
-  onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
-  onMomentumScrollEnd={[Function]}
-  onScroll={[Function]}
-  onScrollBeginDrag={[Function]}
-  onScrollEndDrag={[Function]}
-  renderItem={[Function]}
-  scrollEventThrottle={50}
-  stickyHeaderIndices={Array []}
->
-  <View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    />
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View>
-        <item
-          title="i0"
-        />
-        <separator
-          highlighted={false}
-          leadingItem={
-            Object {
-              "key": "i0",
-            }
-          }
-          section={
-            Object {
-              "data": Array [
-                Object {
-                  "key": "i0",
-                },
-                Object {
-                  "key": "i1",
-                },
-                Object {
-                  "key": "i2",
-                },
-              ],
-              "title": "s0",
-            }
-          }
-          trailingItem={
-            Object {
-              "key": "i1",
-            }
-          }
-        />
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View>
-        <item
-          title="i1"
-        />
-        <separator
-          highlighted={false}
           leadingItem={
             Object {
               "key": "i1",
@@ -759,15 +659,19 @@ exports[`VirtualizedSectionList renders all the bells and whistles 1`] = `
       },
     ]
   }
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
   getItemLayout={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   invertStickyHeaders={true}
   inverted={true}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onRefresh={[MockFunction]}
   onScroll={[Function]}
@@ -795,6 +699,8 @@ exports[`VirtualizedSectionList renders all the bells and whistles 1`] = `
       undefined,
     ]
   }
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <RCTRefreshControl />
   <View>
@@ -977,12 +883,16 @@ exports[`VirtualizedSectionList renders all the bells and whistles 1`] = `
 exports[`VirtualizedSectionList renders empty list 1`] = `
 <RCTScrollView
   data={Array []}
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -990,6 +900,8 @@ exports[`VirtualizedSectionList renders empty list 1`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View />
 </RCTScrollView>
@@ -1001,12 +913,16 @@ exports[`VirtualizedSectionList renders empty list with empty component 1`] = `
   ListFooterComponent={[Function]}
   ListHeaderComponent={[Function]}
   data={Array []}
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -1014,6 +930,8 @@ exports[`VirtualizedSectionList renders empty list with empty component 1`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View>
     <View
@@ -1046,12 +964,16 @@ exports[`VirtualizedSectionList renders list with empty component 1`] = `
       },
     ]
   }
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -1059,6 +981,8 @@ exports[`VirtualizedSectionList renders list with empty component 1`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View>
     <View
@@ -1078,6 +1002,32 @@ exports[`VirtualizedSectionList renders list with empty component 1`] = `
       style={null}
     />
   </View>
+</RCTScrollView>
+`;
+
+exports[`VirtualizedSectionList renders null list 1`] = `
+<RCTScrollView
+  disableVirtualization={false}
+  getItem={[Function]}
+  getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
+  keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
+  onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
+  onLayout={[Function]}
+  onMomentumScrollEnd={[Function]}
+  onScroll={[Function]}
+  onScrollBeginDrag={[Function]}
+  onScrollEndDrag={[Function]}
+  renderItem={[Function]}
+  scrollEventThrottle={50}
+  stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
+>
+  <View />
 </RCTScrollView>
 `;
 
@@ -1101,12 +1051,16 @@ exports[`VirtualizedSectionList renders simple list 1`] = `
       },
     ]
   }
+  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
   keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
+  onEndReachedThreshold={2}
   onLayout={[Function]}
-  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -1114,6 +1068,8 @@ exports[`VirtualizedSectionList renders simple list 1`] = `
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
 >
   <View>
     <View

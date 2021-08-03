@@ -9,7 +9,7 @@
  */
 
 'use strict';
-import type {NamedShape, PropTypeAnnotation} from '../../CodegenSchema';
+import type {PropTypeShape} from '../../CodegenSchema';
 
 function upperCaseFirst(inString: string): string {
   if (inString.length === 0) {
@@ -55,9 +55,7 @@ function getCppTypeForAnnotation(
   }
 }
 
-function getImports(
-  properties: $ReadOnlyArray<NamedShape<PropTypeAnnotation>>,
-): Set<string> {
+function getImports(properties: $ReadOnlyArray<PropTypeShape>): Set<string> {
   const imports: Set<string> = new Set();
 
   function addImportsForNativeName(name) {
@@ -93,7 +91,6 @@ function getImports(
 
     if (typeAnnotation.type === 'ObjectTypeAnnotation') {
       const objectImports = getImports(typeAnnotation.properties);
-      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       objectImports.forEach(imports.add, imports);
     }
   });
@@ -125,7 +122,7 @@ function getEnumMaskName(enumName: string): string {
 
 function convertDefaultTypeToString(
   componentName: string,
-  prop: NamedShape<PropTypeAnnotation>,
+  prop: PropTypeShape,
 ): string {
   const typeAnnotation = prop.typeAnnotation;
   switch (typeAnnotation.type) {

@@ -13,7 +13,7 @@
 const React = require('react');
 const TextAncestor = require('react-native/Libraries/Text/TextAncestor');
 const TextInlineView = require('../../components/TextInlineView');
-import TextLegend from '../../components/TextLegend';
+const TextLegend = require('../../components/TextLegend');
 
 const {
   Button,
@@ -39,11 +39,8 @@ type TextAlignExampleRTLState = {|
   isRTL: boolean,
 |};
 
-class TextAlignRTLExample extends React.Component<
-  {},
-  TextAlignExampleRTLState,
-> {
-  constructor(...args: Array<any>) {
+class TextAlignRTLExample extends React.Component<*, TextAlignExampleRTLState> {
+  constructor(...args: Array<*>) {
     super(...args);
 
     this.state = {
@@ -267,7 +264,7 @@ class AdjustingFontSize extends React.Component<
   }
 }
 
-class TextBaseLineLayoutExample extends React.Component<{}, mixed> {
+class TextBaseLineLayoutExample extends React.Component<*, *> {
   render() {
     const texts = [];
     for (let i = 9; i >= 0; i--) {
@@ -358,24 +355,7 @@ class TextBaseLineLayoutExample extends React.Component<{}, mixed> {
   }
 }
 
-class TextRenderInfoExample extends React.Component<
-  {},
-  {
-    fontSize: number,
-    numberOfTextBlocks: number,
-    textMetrics: $ReadOnly<{
-      ascender: number,
-      capHeight: number,
-      descender: number,
-      height: number,
-      text?: string,
-      width: number,
-      x: number,
-      xHeight: number,
-      y: number,
-    }>,
-  },
-> {
+class TextRenderInfoExample extends React.Component<*, *> {
   state = {
     textMetrics: {
       x: 0,
@@ -459,22 +439,7 @@ class TextRenderInfoExample extends React.Component<
   }
 }
 
-class TextWithCapBaseBox extends React.Component<
-  {children: string, style?: any},
-  {
-    textMetrics: $ReadOnly<{
-      ascender: number,
-      capHeight: number,
-      descender: number,
-      height: number,
-      text?: string,
-      width: number,
-      x: number,
-      xHeight: number,
-      y: number,
-    }>,
-  },
-> {
+class TextWithCapBaseBox extends React.Component<*, *> {
   state = {
     textMetrics: {
       x: 0,
@@ -638,17 +603,21 @@ exports.examples = [
     render: function(): React.Node {
       return (
         <View>
-          <Text style={{fontWeight: 'bold'}}>Move fast and be bold</Text>
-          <Text style={{fontWeight: 'normal'}}>Move fast and be normal</Text>
-          <Text style={{fontWeight: '900'}}>FONT WEIGHT 900</Text>
-          <Text style={{fontWeight: '800'}}>FONT WEIGHT 800</Text>
-          <Text style={{fontWeight: '700'}}>FONT WEIGHT 700</Text>
-          <Text style={{fontWeight: '600'}}>FONT WEIGHT 600</Text>
-          <Text style={{fontWeight: '500'}}>FONT WEIGHT 500</Text>
-          <Text style={{fontWeight: '400'}}>FONT WEIGHT 400</Text>
-          <Text style={{fontWeight: '300'}}>FONT WEIGHT 300</Text>
-          <Text style={{fontWeight: '200'}}>FONT WEIGHT 200</Text>
-          <Text style={{fontWeight: '100'}}>FONT WEIGHT 100</Text>
+          <Text style={{fontSize: 20, fontWeight: '100'}}>
+            Move fast and be ultralight
+          </Text>
+          <Text style={{fontSize: 20, fontWeight: '200'}}>
+            Move fast and be light
+          </Text>
+          <Text style={{fontSize: 20, fontWeight: 'normal'}}>
+            Move fast and be normal
+          </Text>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+            Move fast and be bold
+          </Text>
+          <Text style={{fontSize: 20, fontWeight: '900'}}>
+            Move fast and be ultrabold
+          </Text>
         </View>
       );
     },

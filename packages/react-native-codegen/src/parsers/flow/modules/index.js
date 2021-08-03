@@ -11,13 +11,13 @@
 'use strict';
 
 import type {
-  NamedShape,
   NativeModuleAliasMap,
   NativeModuleArrayTypeAnnotation,
   NativeModuleBaseTypeAnnotation,
   NativeModuleFunctionTypeAnnotation,
-  NativeModuleParamTypeAnnotation,
-  NativeModulePropertyShape,
+  NativeModuleMethodParamSchema,
+  NativeModuleObjectTypeAnnotationPropertySchema,
+  NativeModulePropertySchema,
   NativeModuleSchema,
   Nullable,
 } from '../../../CodegenSchema.js';
@@ -26,18 +26,12 @@ import type {TypeDeclarationMap} from '../utils.js';
 import type {ParserErrorCapturer} from '../utils';
 import type {NativeModuleTypeAnnotation} from '../../../CodegenSchema.js';
 
-const {
-  resolveTypeAnnotation,
-  getTypes,
-  visit,
-  isModuleRegistryCall,
-} = require('../utils.js');
+const {resolveTypeAnnotation, getTypes} = require('../utils.js');
 const {unwrapNullable, wrapNullable} = require('./utils');
 const {
   IncorrectlyParameterizedFlowGenericParserError,
   MisnamedModuleFlowInterfaceParserError,
-  ModuleFlowInterfaceNotFoundParserError,
-  MoreThanOneModuleFlowInterfaceParserError,
+  ModuleFlowInterfaceNotParserError,
   UnnamedFunctionParamParserError,
   UnsupportedArrayElementTypeAnnotationParserError,
   UnsupportedFlowGenericParserError,
@@ -47,12 +41,6 @@ const {
   UnsupportedModulePropertyParserError,
   UnsupportedObjectPropertyTypeAnnotationParserError,
   UnsupportedObjectPropertyValueTypeAnnotationParserError,
-  UnusedModuleFlowInterfaceParserError,
-  MoreThanOneModuleRegistryCallsParserError,
-  UntypedModuleRegistryCallParserError,
-  IncorrectModuleRegistryCallTypeParameterParserError,
-  IncorrectModuleRegistryCallArityParserError,
-  IncorrectModuleRegistryCallArgumentTypeParserError,
 } = require('./errors.js');
 
 const invariant = require('invariant');
@@ -69,7 +57,7 @@ function translateTypeAnnotation(
   flowTypeAnnotation: $FlowFixMe,
   types: TypeDeclarationMap,
   aliasMap: {...NativeModuleAliasMap},
-  tryParse: ParserErrorCapturer,
+  guard: ParserErrorCapturer,
 ): Nullable<NativeModuleTypeAnnotation> {
   const {
     nullable,
@@ -82,7 +70,7 @@ function translateTypeAnnotation(
       switch (typeAnnotation.id.name) {
         case 'RootTag': {
           return wrapNullable(nullable, {
-            type: 'ReservedTypeAnnotation',
+            type: 'ReservedFunctionValueTypeAnnotation',
             name: 'RootTag',
           });
         }
@@ -179,7 +167,7 @@ function translateTypeAnnotation(
             typeAnnotation.typeParameters.params[0],
             types,
             aliasMap,
-            tryParse,
+            guard,
           );
         }
         case 'Stringish': {
@@ -202,7 +190,6 @@ function translateTypeAnnotation(
             type: 'FloatTypeAnnotation',
           });
         }
-        case 'UnsafeObject':
         case 'Object': {
           return wrapNullable(nullable, {
             type: 'GenericObjectTypeAnnotation',
@@ -219,72 +206,69 @@ function translateTypeAnnotation(
     case 'ObjectTypeAnnotation': {
       const objectTypeAnnotation = {
         type: 'ObjectTypeAnnotation',
-        // $FlowFixMe[missing-type-arg]
         properties: (typeAnnotation.properties: Array<$FlowFixMe>)
-          .map<?NamedShape<Nullable<NativeModuleBaseTypeAnnotation>>>(
-            property => {
-              return tryParse(() => {
-                if (property.type !== 'ObjectTypeProperty') {
-                  throw new UnsupportedObjectPropertyTypeAnnotationParserError(
-                    hasteModuleName,
-                    property,
-                    property.type,
-                  );
-                }
-
-                const {optional, key} = property;
-
-                const [
-                  propertyTypeAnnotation,
-                  isPropertyNullable,
-                ] = unwrapNullable(
-                  translateTypeAnnotation(
-                    hasteModuleName,
-                    property.value,
-                    types,
-                    aliasMap,
-                    tryParse,
-                  ),
+          .map<?NativeModuleObjectTypeAnnotationPropertySchema>(property => {
+            return guard(() => {
+              if (property.type !== 'ObjectTypeProperty') {
+                throw new UnsupportedObjectPropertyTypeAnnotationParserError(
+                  hasteModuleName,
+                  property,
+                  property.type,
                 );
+              }
 
-                if (propertyTypeAnnotation.type === 'FunctionTypeAnnotation') {
-                  throw new UnsupportedObjectPropertyValueTypeAnnotationParserError(
-                    hasteModuleName,
-                    property.value,
-                    property.key,
-                    propertyTypeAnnotation.type,
-                  );
-                }
+              const {optional, key} = property;
 
-                if (propertyTypeAnnotation.type === 'VoidTypeAnnotation') {
-                  throw new UnsupportedObjectPropertyValueTypeAnnotationParserError(
-                    hasteModuleName,
-                    property.value,
-                    property.key,
-                    'void',
-                  );
-                }
+              const [
+                propertyTypeAnnotation,
+                isPropertyNullable,
+              ] = unwrapNullable(
+                translateTypeAnnotation(
+                  hasteModuleName,
+                  property.value,
+                  types,
+                  aliasMap,
+                  guard,
+                ),
+              );
 
-                if (propertyTypeAnnotation.type === 'PromiseTypeAnnotation') {
-                  throw new UnsupportedObjectPropertyValueTypeAnnotationParserError(
-                    hasteModuleName,
-                    property.value,
-                    property.key,
-                    'Promise',
-                  );
-                }
+              if (propertyTypeAnnotation.type === 'FunctionTypeAnnotation') {
+                throw new UnsupportedObjectPropertyValueTypeAnnotationParserError(
+                  hasteModuleName,
+                  property.value,
+                  property.key,
+                  propertyTypeAnnotation.type,
+                );
+              }
 
-                return {
-                  name: key.name,
-                  optional,
-                  typeAnnotation: wrapNullable(
-                    isPropertyNullable,
-                    propertyTypeAnnotation,
-                  ),
-                };
-              });
-            },
-          )
+              if (propertyTypeAnnotation.type === 'VoidTypeAnnotation') {
+                throw new UnsupportedObjectPropertyValueTypeAnnotationParserError(
+                  hasteModuleName,
+                  property.value,
+                  property.key,
+                  'void',
+                );
+              }
+
+              if (propertyTypeAnnotation.type === 'PromiseTypeAnnotation') {
+                throw new UnsupportedObjectPropertyValueTypeAnnotationParserError(
+                  hasteModuleName,
+                  property.value,
+                  property.key,
+                  'Promise',
+                );
+              }
+
+              return {
+                name: key.name,
+                optional,
+                typeAnnotation: wrapNullable(
+                  isPropertyNullable,
+                  propertyTypeAnnotation,
+                ),
+              };
+            });
+          })
           .filter(Boolean),
       };
 
@@ -302,9 +286,9 @@ function translateTypeAnnotation(
        *
        * Consider this case:
        *
-       * type Animal = ?{
+       * type Animal = ?{|
        *   name: string,
-       * };
+       * |};
        *
        * type B = Animal
        *
@@ -312,11 +296,11 @@ function translateTypeAnnotation(
        *   +greet: (animal: B) => void;
        * }
        *
-       * In this case, we follow B to Animal, and then Animal to ?{name: string}.
+       * In this case, we follow B to Animal, and then Animal to ?{|name: string|}.
        *
        * We:
        *   1. Replace `+greet: (animal: B) => void;` with `+greet: (animal: ?Animal) => void;`,
-       *   2. Pretend that Animal = {name: string}.
+       *   2. Pretend that Animal = {|name: string|}.
        *
        * Why do we do this?
        *  1. In ObjC, we need to generate a struct called Animal, not B.
@@ -359,7 +343,7 @@ function translateTypeAnnotation(
           typeAnnotation,
           types,
           aliasMap,
-          tryParse,
+          guard,
         ),
       );
     }
@@ -405,13 +389,12 @@ function translateFunctionTypeAnnotation(
   flowFunctionTypeAnnotation: $FlowFixMe,
   types: TypeDeclarationMap,
   aliasMap: {...NativeModuleAliasMap},
-  tryParse: ParserErrorCapturer,
+  guard: ParserErrorCapturer,
 ): NativeModuleFunctionTypeAnnotation {
-  type Param = NamedShape<Nullable<NativeModuleParamTypeAnnotation>>;
-  const params: Array<Param> = [];
+  const params: Array<NativeModuleMethodParamSchema> = [];
 
   for (const flowParam of (flowFunctionTypeAnnotation.params: $ReadOnlyArray<$FlowFixMe>)) {
-    const parsedParam = tryParse(() => {
+    const parsedParam = guard(() => {
       if (flowParam.name == null) {
         throw new UnnamedFunctionParamParserError(flowParam, hasteModuleName);
       }
@@ -426,7 +409,7 @@ function translateFunctionTypeAnnotation(
           flowParam.typeAnnotation,
           types,
           aliasMap,
-          tryParse,
+          guard,
         ),
       );
 
@@ -469,7 +452,7 @@ function translateFunctionTypeAnnotation(
       flowFunctionTypeAnnotation.returnType,
       types,
       aliasMap,
-      tryParse,
+      guard,
     ),
   );
 
@@ -500,8 +483,8 @@ function buildPropertySchema(
   property: $FlowFixMe,
   types: TypeDeclarationMap,
   aliasMap: {...NativeModuleAliasMap},
-  tryParse: ParserErrorCapturer,
-): NativeModulePropertyShape {
+  guard: ParserErrorCapturer,
+): NativeModulePropertySchema {
   let nullable = false;
   let {key, value} = property;
 
@@ -528,133 +511,46 @@ function buildPropertySchema(
         value,
         types,
         aliasMap,
-        tryParse,
+        guard,
       ),
     ),
   };
 }
 
-function isModuleInterface(node) {
-  return (
-    node.type === 'InterfaceDeclaration' &&
-    node.extends.length === 1 &&
-    node.extends[0].type === 'InterfaceExtends' &&
-    node.extends[0].id.name === 'TurboModule'
-  );
-}
-
 function buildModuleSchema(
   hasteModuleName: string,
+  moduleNames: $ReadOnlyArray<string>,
   /**
    * TODO(T71778680): Flow-type this node.
    */
   ast: $FlowFixMe,
-  tryParse: ParserErrorCapturer,
+  guard: ParserErrorCapturer,
 ): NativeModuleSchema {
   const types = getTypes(ast);
-  const moduleSpecs = (Object.values(types): $ReadOnlyArray<$FlowFixMe>).filter(
-    isModuleInterface,
-  );
-
-  if (moduleSpecs.length === 0) {
-    throw new ModuleFlowInterfaceNotFoundParserError(hasteModuleName, ast);
-  }
-
-  if (moduleSpecs.length > 1) {
-    throw new MoreThanOneModuleFlowInterfaceParserError(
-      hasteModuleName,
-      moduleSpecs,
-      moduleSpecs.map(node => node.id.name),
+  const moduleInterfaceNames = (Object.keys(
+    types,
+  ): $ReadOnlyArray<string>).filter((typeName: string) => {
+    const declaration = types[typeName];
+    return (
+      declaration.type === 'InterfaceDeclaration' &&
+      declaration.extends.length === 1 &&
+      declaration.extends[0].type === 'InterfaceExtends' &&
+      declaration.extends[0].id.name === 'TurboModule'
     );
-  }
-
-  const [moduleSpec] = moduleSpecs;
-
-  if (moduleSpec.id.name !== 'Spec') {
-    throw new MisnamedModuleFlowInterfaceParserError(
-      hasteModuleName,
-      moduleSpec.id,
-    );
-  }
-
-  // Parse Module Names
-  const moduleName = tryParse((): string => {
-    const callExpressions = [];
-    visit(ast, {
-      CallExpression(node) {
-        if (isModuleRegistryCall(node)) {
-          callExpressions.push(node);
-        }
-      },
-    });
-
-    if (callExpressions.length === 0) {
-      throw new UnusedModuleFlowInterfaceParserError(
-        hasteModuleName,
-        moduleSpec,
-      );
-    }
-
-    if (callExpressions.length > 1) {
-      throw new MoreThanOneModuleRegistryCallsParserError(
-        hasteModuleName,
-        callExpressions,
-        callExpressions.length,
-      );
-    }
-
-    const [callExpression] = callExpressions;
-    const {typeArguments} = callExpression;
-    const methodName = callExpression.callee.property.name;
-
-    if (callExpression.arguments.length !== 1) {
-      throw new IncorrectModuleRegistryCallArityParserError(
-        hasteModuleName,
-        callExpression,
-        methodName,
-        callExpression.arguments.length,
-      );
-    }
-
-    if (callExpression.arguments[0].type !== 'Literal') {
-      const {type} = callExpression.arguments[0];
-      throw new IncorrectModuleRegistryCallArgumentTypeParserError(
-        hasteModuleName,
-        callExpression.arguments[0],
-        methodName,
-        type,
-      );
-    }
-
-    const $moduleName = callExpression.arguments[0].value;
-
-    if (typeArguments == null) {
-      throw new UntypedModuleRegistryCallParserError(
-        hasteModuleName,
-        callExpression,
-        methodName,
-        $moduleName,
-      );
-    }
-
-    if (
-      typeArguments.type !== 'TypeParameterInstantiation' ||
-      typeArguments.params.length !== 1 ||
-      typeArguments.params[0].type !== 'GenericTypeAnnotation' ||
-      typeArguments.params[0].id.name !== 'Spec'
-    ) {
-      throw new IncorrectModuleRegistryCallTypeParameterParserError(
-        hasteModuleName,
-        typeArguments,
-        methodName,
-        $moduleName,
-      );
-    }
-
-    return $moduleName;
   });
 
-  const moduleNames = moduleName == null ? [] : [moduleName];
+  if (moduleInterfaceNames.length !== 1) {
+    throw new ModuleFlowInterfaceNotParserError(hasteModuleName, ast);
+  }
+
+  const [moduleInterfaceName] = moduleInterfaceNames;
+
+  if (moduleInterfaceName !== 'Spec') {
+    throw new MisnamedModuleFlowInterfaceParserError(
+      hasteModuleName,
+      types[moduleInterfaceName].id,
+    );
+  }
 
   // Some module names use platform suffix to indicate platform-exclusive modules.
   // Eventually this should be made explicit in the Flow type itself.
@@ -670,34 +566,34 @@ function buildModuleSchema(
     }
   });
 
-  // $FlowFixMe[missing-type-arg]
-  return (moduleSpec.body.properties: $ReadOnlyArray<$FlowFixMe>)
+  const declaration = types[moduleInterfaceName];
+  return (declaration.body.properties: $ReadOnlyArray<$FlowFixMe>)
     .filter(property => property.type === 'ObjectTypeProperty')
-    .map<?{
+    .map<?{|
       aliasMap: NativeModuleAliasMap,
-      propertyShape: NativeModulePropertyShape,
-    }>(property => {
+      propertySchema: NativeModulePropertySchema,
+    |}>(property => {
       const aliasMap: {...NativeModuleAliasMap} = {};
 
-      return tryParse(() => ({
+      return guard(() => ({
         aliasMap: aliasMap,
-        propertyShape: buildPropertySchema(
+        propertySchema: buildPropertySchema(
           hasteModuleName,
           property,
           types,
           aliasMap,
-          tryParse,
+          guard,
         ),
       }));
     })
     .filter(Boolean)
     .reduce(
-      (moduleSchema: NativeModuleSchema, {aliasMap, propertyShape}) => {
+      (moduleSchema: NativeModuleSchema, {aliasMap, propertySchema}) => {
         return {
           type: 'NativeModule',
           aliases: {...moduleSchema.aliases, ...aliasMap},
           spec: {
-            properties: [...moduleSchema.spec.properties, propertyShape],
+            properties: [...moduleSchema.spec.properties, propertySchema],
           },
           moduleNames: moduleSchema.moduleNames,
           excludedPlatforms: moduleSchema.excludedPlatforms,

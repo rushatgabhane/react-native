@@ -21,7 +21,7 @@ const {
   StyleSheet,
 } = require('react-native');
 
-import type {RNTesterModuleExample} from '../../types/RNTesterTypes';
+import type {RNTesterExampleModuleItem} from '../../types/RNTesterTypes';
 
 const styles = StyleSheet.create({
   default: {
@@ -46,15 +46,13 @@ const styles = StyleSheet.create({
   labelContainer: {
     flexDirection: 'row',
     marginVertical: 2,
+    flex: 1,
   },
   label: {
     width: 115,
     alignItems: 'flex-end',
     marginRight: 10,
     paddingTop: 2,
-  },
-  inputContainer: {
-    flex: 1,
   },
   rewriteContainer: {
     flexDirection: 'row',
@@ -81,7 +79,7 @@ class WithLabel extends React.Component<$FlowFixMeProps> {
         <View style={styles.label}>
           <Text>{this.props.label}</Text>
         </View>
-        <View style={styles.inputContainer}>{this.props.children}</View>
+        {this.props.children}
       </View>
     );
   }
@@ -327,9 +325,7 @@ class TokenizedTextExample extends React.Component<
         index = 1;
       }
       parts.push(_text.substr(0, index));
-      // $FlowFixMe[incompatible-use]
       parts.push(token[0]);
-      // $FlowFixMe[incompatible-use]
       index = index + token[0].length;
       _text = _text.slice(index);
     }
@@ -339,7 +335,7 @@ class TokenizedTextExample extends React.Component<
     parts = parts.map(text => {
       if (/^#/.test(text)) {
         return (
-          <Text testID="hashtag" key={text} style={styles.hashtag}>
+          <Text key={text} style={styles.hashtag}>
             {text}
           </Text>
         );
@@ -349,9 +345,8 @@ class TokenizedTextExample extends React.Component<
     });
 
     return (
-      <View style={{flexDirection: 'row'}}>
+      <View>
         <TextInput
-          testID="text-input"
           multiline={true}
           style={styles.multiline}
           onChangeText={text => {
@@ -367,7 +362,7 @@ class TokenizedTextExample extends React.Component<
 type SelectionExampleState = {
   selection: $ReadOnly<{|
     start: number,
-    end: number,
+    end?: number,
   |}>,
   value: string,
   ...
@@ -422,47 +417,25 @@ class SelectionExample extends React.Component<
 
     return (
       <View>
-        <View style={{flexDirection: 'row'}}>
-          <TextInput
-            testID={`${this.props.testID}-text-input`}
-            multiline={this.props.multiline}
-            onChangeText={value => this.setState({value})}
-            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-            onSelectionChange={this.onSelectionChange.bind(this)}
-            ref={textInput => (this._textInput = textInput)}
-            selection={this.state.selection}
-            style={this.props.style}
-            value={this.state.value}
-          />
-        </View>
+        <TextInput
+          multiline={this.props.multiline}
+          onChangeText={value => this.setState({value})}
+          onSelectionChange={this.onSelectionChange.bind(this)}
+          ref={textInput => (this._textInput = textInput)}
+          selection={this.state.selection}
+          style={this.props.style}
+          value={this.state.value}
+        />
         <View>
-          <Text testID={`${this.props.testID}-selection`}>
-            selection ={' '}
-            {`{start:${this.state.selection.start},end:${this.state.selection.end}}`}
-          </Text>
-          <Text
-            testID={`${this.props.testID}-cursor-start`}
-            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-            onPress={this.placeAt.bind(this, 0)}>
+          <Text>selection = {JSON.stringify(this.state.selection)}</Text>
+          <Text onPress={this.placeAt.bind(this, 0)}>
             Place at Start (0, 0)
           </Text>
-          <Text
-            testID={`${this.props.testID}-cursor-end`}
-            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-            onPress={this.placeAt.bind(this, length)}>
+          <Text onPress={this.placeAt.bind(this, length)}>
             Place at End ({length}, {length})
           </Text>
-          {/* $FlowFixMe[method-unbinding] added when improving typing for this
-           * parameters */}
           <Text onPress={this.placeAtRandom.bind(this)}>Place at Random</Text>
-          <Text
-            testID={`${this.props.testID}-select-all`}
-            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-            onPress={this.select.bind(this, 0, length)}>
-            Select All
-          </Text>
-          {/* $FlowFixMe[method-unbinding] added when improving typing for this
-           * parameters */}
+          <Text onPress={this.select.bind(this, 0, length)}>Select All</Text>
           <Text onPress={this.selectRandom.bind(this)}>Select Random</Text>
         </View>
       </View>
@@ -484,7 +457,6 @@ module.exports = ([
     },
   },
   {
-    name: 'maxLength',
     title: "Live Re-Write (<sp>  ->  '_') + maxLength",
     render: function(): React.Node {
       return <RewriteExample />;
@@ -497,7 +469,6 @@ module.exports = ([
     },
   },
   {
-    name: 'clearButton',
     title: 'Live Re-Write (no spaces allowed) and clear',
     render: function(): React.Node {
       return <RewriteInvalidCharactersAndClearExample />;
@@ -505,37 +476,20 @@ module.exports = ([
   },
   {
     title: 'Auto-capitalize',
-    name: 'autoCapitalize',
     render: function(): React.Node {
       return (
         <View>
           <WithLabel label="none">
-            <TextInput
-              testID="capitalize-none"
-              autoCapitalize="none"
-              style={styles.default}
-            />
+            <TextInput autoCapitalize="none" style={styles.default} />
           </WithLabel>
           <WithLabel label="sentences">
-            <TextInput
-              testID="capitalize-sentences"
-              autoCapitalize="sentences"
-              style={styles.default}
-            />
+            <TextInput autoCapitalize="sentences" style={styles.default} />
           </WithLabel>
           <WithLabel label="words">
-            <TextInput
-              testID="capitalize-words"
-              autoCapitalize="words"
-              style={styles.default}
-            />
+            <TextInput autoCapitalize="words" style={styles.default} />
           </WithLabel>
           <WithLabel label="characters">
-            <TextInput
-              testID="capitalize-characters"
-              autoCapitalize="characters"
-              style={styles.default}
-            />
+            <TextInput autoCapitalize="characters" style={styles.default} />
           </WithLabel>
         </View>
       );
@@ -558,7 +512,6 @@ module.exports = ([
   },
   {
     title: 'Keyboard types',
-    name: 'keyboardTypes',
     render: function(): React.Node {
       const keyboardTypes = [
         'default',
@@ -640,24 +593,20 @@ module.exports = ([
   },
   {
     title: 'Attributed text',
-    name: 'attributedText',
     render: function(): React.Node {
       return <TokenizedTextExample />;
     },
   },
   {
     title: 'Text selection & cursor placement',
-    name: 'cursorPlacement',
     render: function(): React.Node {
       return (
         <View>
           <SelectionExample
-            testID="singleline"
             style={styles.default}
             value="text selection can be changed"
           />
           <SelectionExample
-            testID="multiline"
             multiline
             style={styles.multiline}
             value={'multiline text selection\ncan also be changed'}
@@ -666,4 +615,4 @@ module.exports = ([
       );
     },
   },
-]: Array<RNTesterModuleExample>);
+]: Array<RNTesterExampleModuleItem>);

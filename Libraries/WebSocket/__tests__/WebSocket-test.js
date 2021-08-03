@@ -15,7 +15,6 @@ jest.setMock('../../BatchedBridge/NativeModules', {
   WebSocketModule: {
     connect: () => {},
   },
-  PlatformConstants: {},
 });
 
 const WebSocket = require('../WebSocket');

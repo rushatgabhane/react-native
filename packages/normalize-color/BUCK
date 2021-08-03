@@ -11,6 +11,7 @@ rn_library(
     labels = ["supermodule:xplat/default/public.react_native.core"],
     skip_processors = True,
     visibility = ["PUBLIC"],
+    worker = "//xplat/js:experimental-packager",
 )
 
 yarn_workspace(

@@ -9,6 +9,8 @@
  * @emails oncall+react_native
  */
 
+'use strict';
+
 import stringifySafe, {createStringifySafeWithLimits} from '../stringifySafe';
 
 describe('stringifySafe', () => {

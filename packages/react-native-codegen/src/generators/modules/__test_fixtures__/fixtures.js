@@ -185,7 +185,7 @@ const SIMPLE_NATIVE_MODULES: SchemaType = {
             typeAnnotation: {
               type: 'FunctionTypeAnnotation',
               returnTypeAnnotation: {
-                type: 'ReservedTypeAnnotation',
+                type: 'ReservedFunctionValueTypeAnnotation',
                 name: 'RootTag',
               },
               params: [
@@ -193,7 +193,7 @@ const SIMPLE_NATIVE_MODULES: SchemaType = {
                   optional: false,
                   name: 'arg',
                   typeAnnotation: {
-                    type: 'ReservedTypeAnnotation',
+                    type: 'ReservedFunctionValueTypeAnnotation',
                     name: 'RootTag',
                   },
                 },

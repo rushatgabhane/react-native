@@ -23,6 +23,8 @@ import typeof InputAccessoryView from './Libraries/Components/TextInput/InputAcc
 import typeof KeyboardAvoidingView from './Libraries/Components/Keyboard/KeyboardAvoidingView';
 import typeof MaskedViewIOS from './Libraries/Components/MaskedView/MaskedViewIOS';
 import typeof Modal from './Libraries/Modal/Modal';
+import typeof Picker from './Libraries/Components/Picker/Picker';
+import typeof PickerIOS from './Libraries/Components/Picker/PickerIOS';
 import typeof Pressable from './Libraries/Components/Pressable/Pressable';
 import typeof ProgressBarAndroid from './Libraries/Components/ProgressBarAndroid/ProgressBarAndroid';
 import typeof ProgressViewIOS from './Libraries/Components/ProgressViewIOS/ProgressViewIOS';
@@ -115,8 +117,7 @@ const warnOnce = require('./Libraries/Utilities/warnOnce');
 module.exports = {
   // Components
   get AccessibilityInfo(): AccessibilityInfo {
-    return require('./Libraries/Components/AccessibilityInfo/AccessibilityInfo')
-      .default;
+    return require('./Libraries/Components/AccessibilityInfo/AccessibilityInfo');
   },
   get ActivityIndicator(): ActivityIndicator {
     return require('./Libraries/Components/ActivityIndicator/ActivityIndicator');
@@ -151,20 +152,38 @@ module.exports = {
     return require('./Libraries/Components/TextInput/InputAccessoryView');
   },
   get KeyboardAvoidingView(): KeyboardAvoidingView {
-    return require('./Libraries/Components/Keyboard/KeyboardAvoidingView')
-      .default;
+    return require('./Libraries/Components/Keyboard/KeyboardAvoidingView');
   },
   get MaskedViewIOS(): MaskedViewIOS {
     warnOnce(
       'maskedviewios-moved',
       'MaskedViewIOS has been extracted from react-native core and will be removed in a future release. ' +
         "It can now be installed and imported from '@react-native-masked-view/masked-view' instead of 'react-native'. " +
-        'See https://github.com/react-native-masked-view/masked-view',
+        'See https://github.com/react-native-masked-view/react-native-masked-view',
     );
     return require('./Libraries/Components/MaskedView/MaskedViewIOS');
   },
   get Modal(): Modal {
     return require('./Libraries/Modal/Modal');
+  },
+  get Picker(): Picker {
+    warnOnce(
+      'picker-moved',
+      'Picker has been extracted from react-native core and will be removed in a future release. ' +
+        "It can now be installed and imported from '@react-native-picker/picker' instead of 'react-native'. " +
+        'See https://github.com/react-native-picker/react-native-picker',
+    );
+    return require('./Libraries/Components/Picker/Picker');
+  },
+  // $FlowFixMe[value-as-type]
+  get PickerIOS(): PickerIOS {
+    warnOnce(
+      'pickerios-moved',
+      'PickerIOS has been extracted from react-native core and will be removed in a future release. ' +
+        "It can now be installed and imported from '@react-native-picker/picker' instead of 'react-native'. " +
+        'See https://github.com/react-native-picker/react-native-picker',
+    );
+    return require('./Libraries/Components/Picker/PickerIOS');
   },
   get Pressable(): Pressable {
     return require('./Libraries/Components/Pressable/Pressable').default;
@@ -193,20 +212,20 @@ module.exports = {
     return require('./Libraries/Components/RefreshControl/RefreshControl');
   },
   get SafeAreaView(): SafeAreaView {
-    return require('./Libraries/Components/SafeAreaView/SafeAreaView').default;
+    return require('./Libraries/Components/SafeAreaView/SafeAreaView');
   },
   get ScrollView(): ScrollView {
     return require('./Libraries/Components/ScrollView/ScrollView');
   },
   get SectionList(): SectionList {
-    return require('./Libraries/Lists/SectionList').default;
+    return require('./Libraries/Lists/SectionList');
   },
   // $FlowFixMe[value-as-type]
   get SegmentedControlIOS(): SegmentedControlIOS {
     warnOnce(
       'segmented-control-ios-moved',
       'SegmentedControlIOS has been extracted from react-native core and will be removed in a future release. ' +
-        "It can now be installed and imported from '@react-native-segmented-control/segmented-control' instead of 'react-native'. " +
+        "It can now be installed and imported from '@react-native-community/segmented-control' instead of 'react-native'. " +
         'See https://github.com/react-native-segmented-control/segmented-control',
     );
     return require('./Libraries/Components/SegmentedControlIOS/SegmentedControlIOS');
@@ -224,7 +243,7 @@ module.exports = {
     return require('./Libraries/Components/StatusBar/StatusBar');
   },
   get Switch(): Switch {
-    return require('./Libraries/Components/Switch/Switch').default;
+    return require('./Libraries/Components/Switch/Switch');
   },
   get Text(): Text {
     return require('./Libraries/Text/Text');
@@ -293,7 +312,7 @@ module.exports = {
     warnOnce(
       'clipboard-moved',
       'Clipboard has been extracted from react-native core and will be removed in a future release. ' +
-        "It can now be installed and imported from '@react-native-clipboard/clipboard' instead of 'react-native'. " +
+        "It can now be installed and imported from '@react-native-community/clipboard' instead of 'react-native'. " +
         'See https://github.com/react-native-clipboard/clipboard',
     );
     return require('./Libraries/Components/Clipboard/Clipboard');
@@ -459,7 +478,7 @@ module.exports = {
   ) => HostComponent<T> {
     return require('./Libraries/ReactNative/requireNativeComponent');
   },
-  get RootTagContext(): RootTagContext {
+  get unstable_RootTagContext(): RootTagContext {
     return require('./Libraries/ReactNative/RootTag').RootTagContext;
   },
   get unstable_enableLogBox(): () => void {
@@ -485,10 +504,7 @@ module.exports = {
 };
 
 if (__DEV__) {
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access ART. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access ART. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access ART.
   Object.defineProperty(module.exports, 'ART', {
     configurable: true,
     get() {
@@ -501,10 +517,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access ListView. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access ListView. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access ListView.
   Object.defineProperty(module.exports, 'ListView', {
     configurable: true,
     get() {
@@ -517,10 +530,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access SwipeableListView. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access SwipeableListView. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access SwipeableListView.
   Object.defineProperty(module.exports, 'SwipeableListView', {
     configurable: true,
     get() {
@@ -533,10 +543,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access WebView. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access WebView. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access WebView.
   Object.defineProperty(module.exports, 'WebView', {
     configurable: true,
     get() {
@@ -549,10 +556,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access NetInfo. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access NetInfo. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access NetInfo.
   Object.defineProperty(module.exports, 'NetInfo', {
     configurable: true,
     get() {
@@ -565,10 +569,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access CameraRoll. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access CameraRoll. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access CameraRoll.
   Object.defineProperty(module.exports, 'CameraRoll', {
     configurable: true,
     get() {
@@ -581,10 +582,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access ImageStore. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access ImageStore. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access ImageStore.
   Object.defineProperty(module.exports, 'ImageStore', {
     configurable: true,
     get() {
@@ -598,10 +596,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access ImageEditor. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access ImageEditor. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access ImageEditor.
   Object.defineProperty(module.exports, 'ImageEditor', {
     configurable: true,
     get() {
@@ -614,10 +609,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access TimePickerAndroid. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access TimePickerAndroid. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access TimePickerAndroid.
   Object.defineProperty(module.exports, 'TimePickerAndroid', {
     configurable: true,
     get() {
@@ -630,10 +622,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access ToolbarAndroid. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access ToolbarAndroid. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access ToolbarAndroid.
   Object.defineProperty(module.exports, 'ToolbarAndroid', {
     configurable: true,
     get() {
@@ -646,10 +635,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access ViewPagerAndroid. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access ViewPagerAndroid. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access ViewPagerAndroid.
   Object.defineProperty(module.exports, 'ViewPagerAndroid', {
     configurable: true,
     get() {
@@ -662,10 +648,7 @@ if (__DEV__) {
     },
   });
 
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access CheckBox. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access CheckBox. */
+  // $FlowFixMe This is intentional: Flow will error when attempting to access CheckBox.
   Object.defineProperty(module.exports, 'CheckBox', {
     configurable: true,
     get() {
@@ -674,38 +657,6 @@ if (__DEV__) {
         'CheckBox has been removed from React Native. ' +
           "It can now be installed and imported from '@react-native-community/checkbox' instead of 'react-native'. " +
           'See https://github.com/react-native-checkbox/react-native-checkbox',
-      );
-    },
-  });
-
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access Picker. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access Picker. */
-  Object.defineProperty(module.exports, 'Picker', {
-    configurable: true,
-    get() {
-      invariant(
-        false,
-        'Picker has been removed from React Native. ' +
-          "It can now be installed and imported from '@react-native-picker/picker' instead of 'react-native'. " +
-          'See https://github.com/react-native-picker/picker',
-      );
-    },
-  });
-
-  /* $FlowFixMe[prop-missing] This is intentional: Flow will error when
-   * attempting to access PickerIOS. */
-  /* $FlowFixMe[invalid-export] This is intentional: Flow will error when
-   * attempting to access PickerIOS. */
-  Object.defineProperty(module.exports, 'PickerIOS', {
-    configurable: true,
-    get() {
-      invariant(
-        false,
-        'PickerIOS has been removed from React Native. ' +
-          "It can now be installed and imported from '@react-native-picker/picker' instead of 'react-native'. " +
-          'See https://github.com/react-native-picker/picker',
       );
     },
   });

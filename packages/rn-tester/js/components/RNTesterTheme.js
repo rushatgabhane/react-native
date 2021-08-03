@@ -8,6 +8,8 @@
  * @format
  */
 
+'use strict';
+
 import * as React from 'react';
 import {Appearance} from 'react-native';
 import type {ColorValue} from 'react-native/Libraries/StyleSheet/StyleSheet';

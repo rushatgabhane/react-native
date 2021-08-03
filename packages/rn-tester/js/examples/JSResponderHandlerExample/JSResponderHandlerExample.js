@@ -8,6 +8,8 @@
  * @flow strict-local
  */
 
+'use strict';
+
 const React = require('react');
 
 const {Text, View, StyleSheet} = require('react-native');

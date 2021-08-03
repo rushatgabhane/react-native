@@ -371,7 +371,6 @@ exports.examples = [
           width: 100,
           height: 50,
           marginTop: -10,
-          position: 'relative',
         },
       });
 

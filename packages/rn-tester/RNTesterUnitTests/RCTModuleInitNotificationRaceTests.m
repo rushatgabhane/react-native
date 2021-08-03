@@ -15,7 +15,6 @@
 #import <React/RCTJavaScriptExecutor.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTViewManager.h>
-#import <React/RCTInitializing.h>
 
 @interface RCTTestViewManager : RCTViewManager
 @end
@@ -37,7 +36,7 @@ RCT_EXPORT_MODULE()
 @end
 
 
-@interface RCTNotificationObserverModule : NSObject <RCTBridgeModule, RCTInitializing>
+@interface RCTNotificationObserverModule : NSObject <RCTBridgeModule>
 
 @property (nonatomic, assign) BOOL didDetectViewManagerInit;
 
@@ -49,8 +48,9 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_MODULE()
 
-- (void)initialize
+- (void)setBridge:(RCTBridge *)bridge
 {
+  _bridge = bridge;
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didInitViewManager:) name:RCTDidInitializeModuleNotification object:nil];
 }
 

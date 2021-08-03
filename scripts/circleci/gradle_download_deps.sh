@@ -6,4 +6,4 @@
 
 set -e
 
-./gradlew :ReactAndroid:downloadNdkBuildDependencies
+./gradlew :ReactAndroid:downloadBoost :ReactAndroid:downloadDoubleConversion :ReactAndroid:downloadFolly :ReactAndroid:downloadGlog

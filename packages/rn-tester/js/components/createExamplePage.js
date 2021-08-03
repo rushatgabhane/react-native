@@ -12,16 +12,16 @@
 
 const React = require('react');
 
-import RNTesterModuleContainer from './RNTesterModuleContainer';
-import type {RNTesterModule} from '../types/RNTesterTypes';
+const RNTesterExampleContainer = require('./RNTesterExampleContainer');
+import type {RNTesterExample} from '../types/RNTesterTypes';
 
 const createExamplePage = function(
   title: ?string,
-  exampleModule: RNTesterModule,
+  exampleModule: RNTesterExample,
 ): React.ComponentType<any> {
   class ExamplePage extends React.Component<{...}> {
     render() {
-      return <RNTesterModuleContainer module={exampleModule} />;
+      return <RNTesterExampleContainer module={exampleModule} title={title} />;
     }
   }
 

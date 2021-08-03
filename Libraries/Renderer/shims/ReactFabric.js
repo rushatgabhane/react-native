@@ -6,14 +6,14 @@
  *
  * @format
  * @flow
- * @generated SignedSource<<dd0939e57b6f6addeff0b75ba29fbb41>>
  */
 
 'use strict';
 
 import {BatchedBridge} from 'react-native/Libraries/ReactPrivate/ReactNativePrivateInterface';
 
-import type {ReactFabricType} from './ReactNativeTypes';
+// TODO @sema: Adjust types
+import type {ReactNativeType} from './ReactNativeTypes';
 
 let ReactFabric;
 
@@ -29,4 +29,4 @@ if (global.RN$Bridgeless) {
   BatchedBridge.registerCallableModule('ReactFabric', ReactFabric);
 }
 
-module.exports = (ReactFabric: ReactFabricType);
+module.exports = (ReactFabric: ReactNativeType);

@@ -8,10 +8,7 @@
 #pragma once
 
 #include <folly/dynamic.h>
-#include <glog/logging.h>
-#include <react/debug/react_native_assert.h>
 #include <react/renderer/components/view/AccessibilityPrimitives.h>
-#include <react/renderer/core/PropsParserContext.h>
 #include <react/renderer/core/propsConversions.h>
 
 namespace facebook {
@@ -22,7 +19,7 @@ inline void fromString(const std::string &string, AccessibilityTraits &result) {
     result = AccessibilityTraits::None;
     return;
   }
-  if (string == "button" || string == "togglebutton") {
+  if (string == "button") {
     result = AccessibilityTraits::Button;
     return;
   }
@@ -97,42 +94,34 @@ inline void fromString(const std::string &string, AccessibilityTraits &result) {
   result = AccessibilityTraits::None;
 }
 
-inline void fromRawValue(
-    const PropsParserContext &context,
-    const RawValue &value,
-    AccessibilityTraits &result) {
+inline void fromRawValue(const RawValue &value, AccessibilityTraits &result) {
   if (value.hasType<std::string>()) {
     fromString((std::string)value, result);
     return;
   }
 
-  result = {};
-
-  react_native_assert(value.hasType<std::vector<std::string>>());
   if (value.hasType<std::vector<std::string>>()) {
+    result = {};
     auto items = (std::vector<std::string>)value;
     for (auto &item : items) {
       AccessibilityTraits itemAccessibilityTraits;
       fromString(item, itemAccessibilityTraits);
       result = result | itemAccessibilityTraits;
     }
-  } else {
-    LOG(ERROR) << "AccessibilityTraits parsing: unsupported type";
   }
+
+  abort();
 }
 
-inline void fromRawValue(
-    const PropsParserContext &context,
-    const RawValue &value,
-    AccessibilityState &result) {
+inline void fromRawValue(const RawValue &value, AccessibilityState &result) {
   auto map = (better::map<std::string, RawValue>)value;
   auto selected = map.find("selected");
   if (selected != map.end()) {
-    fromRawValue(context, selected->second, result.selected);
+    fromRawValue(selected->second, result.selected);
   }
   auto disabled = map.find("disabled");
   if (disabled != map.end()) {
-    fromRawValue(context, disabled->second, result.disabled);
+    fromRawValue(disabled->second, result.disabled);
   }
   auto checked = map.find("checked");
   if (checked != map.end()) {
@@ -154,11 +143,11 @@ inline void fromRawValue(
   }
   auto busy = map.find("busy");
   if (busy != map.end()) {
-    fromRawValue(context, busy->second, result.busy);
+    fromRawValue(busy->second, result.busy);
   }
   auto expanded = map.find("expanded");
   if (expanded != map.end()) {
-    fromRawValue(context, expanded->second, result.expanded);
+    fromRawValue(expanded->second, result.expanded);
   }
 }
 
@@ -177,47 +166,26 @@ inline std::string toString(
 }
 
 inline void fromRawValue(
-    const PropsParserContext &context,
     const RawValue &value,
     ImportantForAccessibility &result) {
-  react_native_assert(value.hasType<std::string>());
-  if (value.hasType<std::string>()) {
-    auto string = (std::string)value;
-    if (string == "auto") {
-      result = ImportantForAccessibility::Auto;
-    } else if (string == "yes") {
-      result = ImportantForAccessibility::Yes;
-    } else if (string == "no") {
-      result = ImportantForAccessibility::No;
-    } else if (string == "no-hide-descendants") {
-      result = ImportantForAccessibility::NoHideDescendants;
-    } else {
-      LOG(ERROR) << "Unsupported ImportantForAccessiblity value: " << string;
-      react_native_assert(false);
-    }
-  } else {
-    LOG(ERROR) << "Unsupported ImportantForAccessiblity type";
+  auto string = (std::string)value;
+  if (string == "auto") {
+    result = ImportantForAccessibility::Auto;
+    return;
   }
-}
-
-inline void fromRawValue(
-    const PropsParserContext &context,
-    const RawValue &value,
-    AccessibilityAction &result) {
-  auto map = (better::map<std::string, RawValue>)value;
-
-  auto name = map.find("name");
-  react_native_assert(name != map.end() && name->second.hasType<std::string>());
-  if (name != map.end()) {
-    fromRawValue(context, name->second, result.name);
+  if (string == "yes") {
+    result = ImportantForAccessibility::Yes;
+    return;
   }
-
-  auto label = map.find("label");
-  if (label != map.end()) {
-    if (label->second.hasType<std::string>()) {
-      result.label = (std::string)label->second;
-    }
+  if (string == "no") {
+    result = ImportantForAccessibility::No;
+    return;
   }
+  if (string == "no-hide-descendants") {
+    result = ImportantForAccessibility::NoHideDescendants;
+    return;
+  }
+  abort();
 }
 
 } // namespace react

@@ -16,11 +16,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'ArrayPropsNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const ArrayPropsNativeComponentViewConfig = {
   uiViewClassName: 'ArrayPropsNativeComponent',
 
   validAttributes: {
@@ -40,7 +38,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     array: true,
     arrayOfArrayOfObject: true,
   },
-}));
+};
+
+let nativeComponentName = 'ArrayPropsNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, ArrayPropsNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ArrayPropsNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -61,17 +67,23 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'ArrayPropsNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const ArrayPropsNativeComponentViewConfig = {
   uiViewClassName: 'ArrayPropsNativeComponent',
 
   validAttributes: {
     nativePrimitives: true,
   },
-}));
+};
+
+let nativeComponentName = 'ArrayPropsNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, ArrayPropsNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ArrayPropsNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -92,17 +104,23 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'BooleanPropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const BooleanPropNativeComponentViewConfig = {
   uiViewClassName: 'BooleanPropNativeComponent',
 
   validAttributes: {
     disabled: true,
   },
-}));
+};
+
+let nativeComponentName = 'BooleanPropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, BooleanPropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = BooleanPropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -123,11 +141,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'ColorPropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const ColorPropNativeComponentViewConfig = {
   uiViewClassName: 'ColorPropNativeComponent',
 
   validAttributes: {
@@ -135,7 +151,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
       process: require('processColor'),
     },
   },
-}));
+};
+
+let nativeComponentName = 'ColorPropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, ColorPropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ColorPropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -156,15 +180,21 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 const {dispatchCommand} = require(\\"react-native/Libraries/Renderer/shims/ReactNative\\");
+
+const CommandNativeComponentViewConfig = {
+  uiViewClassName: 'CommandNativeComponent',
+  validAttributes: {},
+};
 
 let nativeComponentName = 'CommandNativeComponent';
 
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
-  uiViewClassName: 'CommandNativeComponent',
-  validAttributes: {},
-}));
+registerGeneratedViewConfig(nativeComponentName, CommandNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = CommandNativeComponentViewConfig;
+
+export default nativeComponentName;
 
 export const Commands = {
     flashScrollIndicators(ref) {
@@ -195,18 +225,24 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 const {dispatchCommand} = require(\\"react-native/Libraries/Renderer/shims/ReactNative\\");
 
-let nativeComponentName = 'CommandNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const CommandNativeComponentViewConfig = {
   uiViewClassName: 'CommandNativeComponent',
 
   validAttributes: {
     accessibilityHint: true,
   },
-}));
+};
+
+let nativeComponentName = 'CommandNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, CommandNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = CommandNativeComponentViewConfig;
+
+export default nativeComponentName;
 
 export const Commands = {
     handleRootTag(ref, rootTag) {
@@ -237,11 +273,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'DoublePropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const DoublePropNativeComponentViewConfig = {
   uiViewClassName: 'DoublePropNativeComponent',
 
   validAttributes: {
@@ -252,7 +286,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     blurRadius5: true,
     blurRadius6: true,
   },
-}));
+};
+
+let nativeComponentName = 'DoublePropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, DoublePropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = DoublePropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -273,11 +315,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'EventsNestedObjectNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const EventsNestedObjectNativeComponentViewConfig = {
   uiViewClassName: 'EventsNestedObjectNativeComponent',
 
   bubblingEventTypes: {
@@ -293,7 +333,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     disabled: true,
     onChange: true,
   },
-}));
+};
+
+let nativeComponentName = 'EventsNestedObjectNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, EventsNestedObjectNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = EventsNestedObjectNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -314,11 +362,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'EventsNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const EventsNativeComponentViewConfig = {
   uiViewClassName: 'EventsNativeComponent',
 
   bubblingEventTypes: {
@@ -354,7 +400,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     onOrientationChange: true,
     onEnd: true,
   },
-}));
+};
+
+let nativeComponentName = 'EventsNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, EventsNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = EventsNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -375,11 +429,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'RCTInterfaceOnlyComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const InterfaceOnlyComponentViewConfig = {
   uiViewClassName: 'RCTInterfaceOnlyComponent',
 
   bubblingEventTypes: {
@@ -412,7 +464,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     onChange: true,
     onDire tChange: true,
   },
-}));
+};
+
+let nativeComponentName = 'RCTInterfaceOnlyComponent';
+
+registerGeneratedViewConfig(nativeComponentName, InterfaceOnlyComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = InterfaceOnlyComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -433,14 +493,20 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
+
+const ExcludedAndroidComponentViewConfig = {
+  uiViewClassName: 'ExcludedAndroidComponent',
+  validAttributes: {},
+};
 
 let nativeComponentName = 'ExcludedAndroidComponent';
 
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
-  uiViewClassName: 'ExcludedAndroidComponent',
-  validAttributes: {},
-}));
+registerGeneratedViewConfig(nativeComponentName, ExcludedAndroidComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ExcludedAndroidComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -461,14 +527,20 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
+
+const ExcludedAndroidIosComponentViewConfig = {
+  uiViewClassName: 'ExcludedAndroidIosComponent',
+  validAttributes: {},
+};
 
 let nativeComponentName = 'ExcludedAndroidIosComponent';
 
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
-  uiViewClassName: 'ExcludedAndroidIosComponent',
-  validAttributes: {},
-}));
+registerGeneratedViewConfig(nativeComponentName, ExcludedAndroidIosComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ExcludedAndroidIosComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -489,11 +561,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'FloatPropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const FloatPropNativeComponentViewConfig = {
   uiViewClassName: 'FloatPropNativeComponent',
 
   validAttributes: {
@@ -504,7 +574,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     blurRadius5: true,
     blurRadius6: true,
   },
-}));
+};
+
+let nativeComponentName = 'FloatPropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, FloatPropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = FloatPropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -525,11 +603,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'ImagePropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const ImagePropNativeComponentViewConfig = {
   uiViewClassName: 'ImagePropNativeComponent',
 
   validAttributes: {
@@ -537,7 +613,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
       process: require('resolveAssetSource'),
     },
   },
-}));
+};
+
+let nativeComponentName = 'ImagePropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, ImagePropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ImagePropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -558,11 +642,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'InsetsPropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const InsetsPropNativeComponentViewConfig = {
   uiViewClassName: 'InsetsPropNativeComponent',
 
   validAttributes: {
@@ -570,7 +652,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
       diff: require('insetsDiffer'),
     },
   },
-}));
+};
+
+let nativeComponentName = 'InsetsPropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, InsetsPropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = InsetsPropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -591,17 +681,23 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'Int32EnumPropsNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const Int32EnumPropsNativeComponentViewConfig = {
   uiViewClassName: 'Int32EnumPropsNativeComponent',
 
   validAttributes: {
     maxInterval: true,
   },
-}));
+};
+
+let nativeComponentName = 'Int32EnumPropsNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, Int32EnumPropsNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = Int32EnumPropsNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -622,11 +718,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'IntegerPropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const IntegerPropNativeComponentViewConfig = {
   uiViewClassName: 'IntegerPropNativeComponent',
 
   validAttributes: {
@@ -634,7 +728,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     progress2: true,
     progress3: true,
   },
-}));
+};
+
+let nativeComponentName = 'IntegerPropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, IntegerPropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = IntegerPropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -655,11 +757,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'RCTInterfaceOnlyComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const InterfaceOnlyComponentViewConfig = {
   uiViewClassName: 'RCTInterfaceOnlyComponent',
 
   bubblingEventTypes: {
@@ -675,7 +775,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
     accessibilityHint: true,
     onChange: true,
   },
-}));
+};
+
+let nativeComponentName = 'RCTInterfaceOnlyComponent';
+
+registerGeneratedViewConfig(nativeComponentName, InterfaceOnlyComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = InterfaceOnlyComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -696,11 +804,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'ImageColorPropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const ImageColorPropNativeComponentViewConfig = {
   uiViewClassName: 'ImageColorPropNativeComponent',
 
   validAttributes: {
@@ -720,7 +826,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
       diff: require('pointsDiffer'),
     },
   },
-}));
+};
+
+let nativeComponentName = 'ImageColorPropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, ImageColorPropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ImageColorPropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -741,14 +855,20 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
+
+const NoPropsNoEventsComponentViewConfig = {
+  uiViewClassName: 'NoPropsNoEventsComponent',
+  validAttributes: {},
+};
 
 let nativeComponentName = 'NoPropsNoEventsComponent';
 
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
-  uiViewClassName: 'NoPropsNoEventsComponent',
-  validAttributes: {},
-}));
+registerGeneratedViewConfig(nativeComponentName, NoPropsNoEventsComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = NoPropsNoEventsComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -769,17 +889,23 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'ObjectProps';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const ObjectPropsViewConfig = {
   uiViewClassName: 'ObjectProps',
 
   validAttributes: {
     objectProp: true,
   },
-}));
+};
+
+let nativeComponentName = 'ObjectProps';
+
+registerGeneratedViewConfig(nativeComponentName, ObjectPropsViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = ObjectPropsViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -800,11 +926,9 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'PointPropNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const PointPropNativeComponentViewConfig = {
   uiViewClassName: 'PointPropNativeComponent',
 
   validAttributes: {
@@ -812,7 +936,15 @@ export default NativeComponentRegistry.get(nativeComponentName, () => ({
       diff: require('pointsDiffer'),
     },
   },
-}));
+};
+
+let nativeComponentName = 'PointPropNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, PointPropNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = PointPropNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -833,17 +965,23 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'StringEnumPropsNativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const StringEnumPropsNativeComponentViewConfig = {
   uiViewClassName: 'StringEnumPropsNativeComponent',
 
   validAttributes: {
     alignment: true,
   },
-}));
+};
+
+let nativeComponentName = 'StringEnumPropsNativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, StringEnumPropsNativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = StringEnumPropsNativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -864,18 +1002,24 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'StringPropComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const StringPropComponentViewConfig = {
   uiViewClassName: 'StringPropComponent',
 
   validAttributes: {
     accessibilityHint: true,
     accessibilityRole: true,
   },
-}));
+};
+
+let nativeComponentName = 'StringPropComponent';
+
+registerGeneratedViewConfig(nativeComponentName, StringPropComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = StringPropComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -896,27 +1040,39 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'MultiFile1NativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const MultiFile1NativeComponentViewConfig = {
   uiViewClassName: 'MultiFile1NativeComponent',
 
   validAttributes: {
     disabled: true,
   },
-}));
+};
 
-let nativeComponentName = 'MultiFile2NativeComponent';
+let nativeComponentName = 'MultiFile1NativeComponent';
 
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+registerGeneratedViewConfig(nativeComponentName, MultiFile1NativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = MultiFile1NativeComponentViewConfig;
+
+export default nativeComponentName;
+
+const MultiFile2NativeComponentViewConfig = {
   uiViewClassName: 'MultiFile2NativeComponent',
 
   validAttributes: {
     disabled: true,
   },
-}));
+};
+
+let nativeComponentName = 'MultiFile2NativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, MultiFile2NativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = MultiFile2NativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -937,27 +1093,39 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 
-let nativeComponentName = 'MultiComponent1NativeComponent';
-
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+const MultiComponent1NativeComponentViewConfig = {
   uiViewClassName: 'MultiComponent1NativeComponent',
 
   validAttributes: {
     disabled: true,
   },
-}));
+};
 
-let nativeComponentName = 'MultiComponent2NativeComponent';
+let nativeComponentName = 'MultiComponent1NativeComponent';
 
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
+registerGeneratedViewConfig(nativeComponentName, MultiComponent1NativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = MultiComponent1NativeComponentViewConfig;
+
+export default nativeComponentName;
+
+const MultiComponent2NativeComponentViewConfig = {
   uiViewClassName: 'MultiComponent2NativeComponent',
 
   validAttributes: {
     disabled: true,
   },
-}));
+};
+
+let nativeComponentName = 'MultiComponent2NativeComponent';
+
+registerGeneratedViewConfig(nativeComponentName, MultiComponent2NativeComponentViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = MultiComponent2NativeComponentViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;
@@ -978,21 +1146,27 @@ Map {
 
 'use strict';
 
-const NativeComponentRegistry = require('NativeComponentRegistry');
+const registerGeneratedViewConfig = require('registerGeneratedViewConfig');
 const {UIManager} = require(\\"react-native\\")
+
+const NativeComponentNameViewConfig = {
+  uiViewClassName: 'NativeComponentName',
+  validAttributes: {},
+};
 
 let nativeComponentName = 'NativeComponentName';
 if (UIManager.getViewManagerConfig('NativeComponentName')) {
   nativeComponentName = 'NativeComponentName';
-} else if (UIManager.getViewManagerConfig('DeprecatedNativeComponentName')) {
+} else if (UIManager.getViewManagerConfig('DeprecatedNativeComponentName')){
   nativeComponentName = 'DeprecatedNativeComponentName';
 } else {
-  throw new Error('Failed to find native component for either \\"NativeComponentName\\" or \\"DeprecatedNativeComponentName\\"');
+  throw new Error('Failed to find native component for either \\"NativeComponentName\\" or \\"DeprecatedNativeComponentName\\"')
 }
-export default NativeComponentRegistry.get(nativeComponentName, () => ({
-  uiViewClassName: 'NativeComponentName',
-  validAttributes: {},
-}));
+registerGeneratedViewConfig(nativeComponentName, NativeComponentNameViewConfig);
+
+export const __INTERNAL_VIEW_CONFIG = NativeComponentNameViewConfig;
+
+export default nativeComponentName;
 ",
 }
 `;

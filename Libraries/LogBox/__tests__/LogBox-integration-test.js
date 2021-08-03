@@ -8,6 +8,8 @@
  * @emails oncall+react_native
  */
 
+'use strict';
+
 const LogBoxData = require('../Data/LogBoxData');
 const TestRenderer = require('react-test-renderer');
 

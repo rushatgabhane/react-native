@@ -60,6 +60,7 @@ module.exports = {
           const properties = args[0].properties;
           if (
             !(
+              properties.length === 2 &&
               properties[0].type === 'Property' &&
               properties[0].key.name === 'light' &&
               properties[1].type === 'Property' &&

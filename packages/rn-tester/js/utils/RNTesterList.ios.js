@@ -10,9 +10,9 @@
 
 'use strict';
 
-import type {RNTesterModuleInfo} from '../types/RNTesterTypes';
+import type {RNTesterExample} from '../types/RNTesterTypes';
 
-const Components: Array<RNTesterModuleInfo> = [
+const ComponentExamples: Array<RNTesterExample> = [
   {
     key: 'ActivityIndicatorExample',
     category: 'UI',
@@ -30,21 +30,6 @@ const Components: Array<RNTesterModuleInfo> = [
     module: require('../examples/FlatList/FlatListExample'),
     category: 'ListView',
     supportsTVOS: true,
-  },
-  {
-    key: 'FlatList-withSeparators',
-    module: require('../examples/FlatList/FlatList-withSeparators'),
-    category: 'ListView',
-  },
-  {
-    key: 'FlatList-onViewableItemsChanged',
-    module: require('../examples/FlatList/FlatList-onViewableItemsChanged'),
-    category: 'ListView',
-  },
-  {
-    key: 'FlatList-onEndReached',
-    module: require('../examples/FlatList/FlatList-onEndReached'),
-    category: 'ListView',
   },
   {
     key: 'ImageExample',
@@ -119,24 +104,14 @@ const Components: Array<RNTesterModuleInfo> = [
     supportsTVOS: true,
   },
   {
-    key: 'ScrollViewIndicatorInsetsExample',
-    module: require('../examples/ScrollView/ScrollViewIndicatorInsetsExample'),
-  },
-  {
-    key: 'SectionListIndex',
-    module: require('../examples/SectionList/SectionListIndex'),
+    key: 'SectionListExample',
+    module: require('../examples/SectionList/SectionListExample'),
     category: 'ListView',
     supportsTVOS: true,
   },
   {
     key: 'StatusBarExample',
     module: require('../examples/StatusBar/StatusBarExample'),
-    supportsTVOS: false,
-  },
-  {
-    key: 'SwipeableCardExample',
-    module: require('../examples/SwipeableCardExample/SwipeableCardExample'),
-    category: 'UI',
     supportsTVOS: false,
   },
   {
@@ -175,7 +150,7 @@ const Components: Array<RNTesterModuleInfo> = [
   },
 ];
 
-const APIs: Array<RNTesterModuleInfo> = [
+const APIExamples: Array<RNTesterExample> = [
   {
     key: 'AccessibilityExample',
     module: require('../examples/Accessibility/AccessibilityExample'),
@@ -200,13 +175,13 @@ const APIs: Array<RNTesterModuleInfo> = [
     supportsTVOS: true,
   },
   {
-    key: 'AnimatedIndex',
-    module: require('../examples/Animated/AnimatedIndex').default,
+    key: 'AnimatedExample',
+    module: require('../examples/Animated/AnimatedExample'),
     supportsTVOS: true,
   },
   {
     key: 'AnExApp',
-    module: require('../examples/AnimatedGratuitousApp/AnExApp'),
+    module: require('../examples/Animated/AnimatedGratuitousApp/AnExApp'),
     supportsTVOS: true,
   },
   {
@@ -337,13 +312,13 @@ const APIs: Array<RNTesterModuleInfo> = [
 
 const Modules: {...} = {};
 
-APIs.concat(Components).forEach(Example => {
+APIExamples.concat(ComponentExamples).forEach(Example => {
   Modules[Example.key] = Example.module;
 });
 
 const RNTesterList = {
-  APIs,
-  Components,
+  APIExamples,
+  ComponentExamples,
   Modules,
 };
 

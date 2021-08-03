@@ -23,7 +23,6 @@
 @property (nonatomic, assign, getter=isTransparent) BOOL transparent;
 
 @property (nonatomic, copy) RCTDirectEventBlock onShow;
-@property (nonatomic, assign) BOOL visible;
 
 @property (nonatomic, copy) NSNumber *identifier;
 
@@ -31,9 +30,6 @@
 
 @property (nonatomic, copy) NSArray<NSString *> *supportedOrientations;
 @property (nonatomic, copy) RCTDirectEventBlock onOrientationChange;
-
-// Fabric only
-@property (nonatomic, copy) RCTBubblingEventBlock onDismiss;
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge NS_DESIGNATED_INITIALIZER;
 

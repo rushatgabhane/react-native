@@ -22,7 +22,7 @@ import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTyp
 // Verify that RCTSnapshot is part of the UIManager since it is only loaded
 // if you have linked against RCTTest like in tests, otherwise we will have
 // a warning printed out
-const RCTSnapshot = UIManager.hasViewManagerConfig('RCTSnapshot')
+const RCTSnapshot = UIManager.getViewManagerConfig('RCTSnapshot')
   ? require('../../../RCTTest/RCTSnapshotNativeComponent')
   : View;
 
@@ -47,7 +47,7 @@ class SnapshotViewIOS extends React.Component<Props> {
     const testIdentifier = this.props.testIdentifier || 'test';
     const onSnapshotReady = this.props.onSnapshotReady || this.onDefaultAction;
     return (
-      // $FlowFixMe[prop-missing] - Typing ReactNativeComponent revealed errors
+      // $FlowFixMe - Typing ReactNativeComponent revealed errors
       <RCTSnapshot
         style={style.snapshot}
         {...this.props}

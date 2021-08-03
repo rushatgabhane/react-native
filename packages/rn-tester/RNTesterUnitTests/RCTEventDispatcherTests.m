@@ -75,7 +75,6 @@
 {
   id _bridge;
   RCTEventDispatcher *_eventDispatcher;
-  RCTCallableJSModules *_callableJSModules;
 
   NSString *_eventName;
   NSDictionary<NSString *, id> *_body;
@@ -90,13 +89,8 @@
 
   _bridge = [OCMockObject mockForClass:[RCTDummyBridge class]];
 
-  _callableJSModules = [RCTCallableJSModules new];
-  [_callableJSModules setBridge:_bridge];
-
   _eventDispatcher = [RCTEventDispatcher new];
   [_eventDispatcher setValue:_bridge forKey:@"bridge"];
-  [_eventDispatcher setValue:_callableJSModules forKey:@"callableJSModules"];
-  [_eventDispatcher initialize];
 
   _eventName = RCTNormalizeInputEventName(@"sampleEvent");
   _body = @{ @"foo": @"bar" };
@@ -167,8 +161,8 @@
   [_bridge verify];
 
   // eventsEmittingBlock would be called when js is no longer busy, which will result in emitting events
-  [self _expectBridgeJSCall:[[_testEvent class] moduleDotMethod]
-                       args:[_testEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[_testEvent class] moduleDotMethod]
+                             args:[_testEvent arguments]];
   eventsEmittingBlock();
   [_bridge verify];
 
@@ -185,8 +179,8 @@
     eventsEmittingBlock = block;
     return YES;
   }] queue:RCTJSThread];
-  [self _expectBridgeJSCall:[[_testEvent class] moduleDotMethod]
-                       args:[_testEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[_testEvent class] moduleDotMethod]
+                             args:[_testEvent arguments]];
 
   RCTTestEvent *ignoredEvent = [[RCTTestEvent alloc] initWithViewTag:nil
                                                            eventName:_eventName
@@ -212,10 +206,10 @@
     eventsEmittingBlock = block;
     return YES;
   }] queue:RCTJSThread];
-  [self _expectBridgeJSCall:[[_testEvent class] moduleDotMethod]
-                       args:[firstEvent arguments]];
-  [self _expectBridgeJSCall:[[_testEvent class] moduleDotMethod]
-                       args:[_testEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[_testEvent class] moduleDotMethod]
+                             args:[firstEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[_testEvent class] moduleDotMethod]
+                             args:[_testEvent arguments]];
 
 
   [_eventDispatcher sendEvent:firstEvent];
@@ -241,10 +235,10 @@
     eventsEmittingBlock = block;
     return YES;
   }] queue:RCTJSThread];
-  [self _expectBridgeJSCall:[[firstEvent class] moduleDotMethod]
-                       args:[firstEvent arguments]];
-  [self _expectBridgeJSCall:[[secondEvent class] moduleDotMethod]
-                       args:[secondEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[firstEvent class] moduleDotMethod]
+                             args:[firstEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[secondEvent class] moduleDotMethod]
+                             args:[secondEvent arguments]];
 
 
   [_eventDispatcher sendEvent:firstEvent];
@@ -271,10 +265,10 @@
     eventsEmittingBlock = block;
     return YES;
   }] queue:RCTJSThread];
-  [self _expectBridgeJSCall:[[_testEvent class] moduleDotMethod]
-                       args:[firstEvent arguments]];
-  [self _expectBridgeJSCall:[[_testEvent class] moduleDotMethod]
-                       args:[secondEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[_testEvent class] moduleDotMethod]
+                             args:[firstEvent arguments]];
+  [[_bridge expect] enqueueJSCall:[[_testEvent class] moduleDotMethod]
+                             args:[secondEvent arguments]];
 
 
   [_eventDispatcher sendEvent:firstEvent];
@@ -288,17 +282,6 @@
   eventsEmittingBlock();
 
   [_bridge verify];
-}
-
--(void)_expectBridgeJSCall:(NSString *)moduleDotMethod args:(NSArray *)args
-{
-  NSArray<NSString *> *const components = [moduleDotMethod componentsSeparatedByString:@"."];
-  NSString *const moduleName = components[0];
-  NSString *const methodName = components[1];
-  [[_bridge expect] enqueueJSCall:moduleName
-                           method:methodName
-                             args:args
-                       completion:NULL];
 }
 
 @end

@@ -17,7 +17,6 @@ const failures = require('../__test_fixtures__/failures.js');
 const transform = (fixture, filename) =>
   babelTransform(fixture, {
     babelrc: false,
-    browserslistConfigFile: false,
     cwd: '/',
     filename: filename,
     highlightCode: false,

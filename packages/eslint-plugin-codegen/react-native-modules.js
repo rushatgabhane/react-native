@@ -17,6 +17,26 @@ const ERRORS = {
   misnamedHasteModule(hasteModuleName) {
     return `Module ${hasteModuleName}: All files using TurboModuleRegistry must start with Native.`;
   },
+  untypedModuleRequire(hasteModuleName, requireMethodName) {
+    return `Module ${hasteModuleName}: Please type parameterize the Module require: TurboModuleRegistry.${requireMethodName}<Spec>().`;
+  },
+  incorrectlyTypedModuleRequire(hasteModuleName, requireMethodName) {
+    return `Module ${hasteModuleName}: Type parameter of Module require must be 'Spec': TurboModuleRegistry.${requireMethodName}<Spec>().`;
+  },
+  multipleModuleRequires(hasteModuleName, numCalls) {
+    return `Module ${hasteModuleName}: Module spec must contain exactly one call into TurboModuleRegistry, detected ${numCalls}.`;
+  },
+  calledModuleRequireWithWrongType(hasteModuleName, requireMethodName, type) {
+    const a = /[aeiouy]/.test(type.toLowerCase()) ? 'an' : 'a';
+    return `Module ${hasteModuleName}: TurboModuleRegistry.${requireMethodName}<Spec>() must be called with a string literal, detected ${a} '${type}'.`;
+  },
+  calledModuleRequireWithWrongLiteral(
+    hasteModuleName,
+    requireMethodName,
+    literal,
+  ) {
+    return `Module ${hasteModuleName}: TurboModuleRegistry.${requireMethodName}<Spec>() must be called with a string literal, detected ${literal}`;
+  },
 };
 
 let RNModuleParser;
@@ -96,11 +116,23 @@ function rule(context) {
     return {};
   }
 
-  let isModule = false;
-
+  let moduleRequires = [];
   return {
     'Program:exit': function(node) {
-      if (!isModule) {
+      if (moduleRequires.length === 0) {
+        return;
+      }
+
+      if (moduleRequires.length > 1) {
+        moduleRequires.forEach(callExpressionNode => {
+          context.report({
+            node: callExpressionNode,
+            message: ERRORS.multipleModuleRequires(
+              hasteModuleName,
+              moduleRequires.length,
+            ),
+          });
+        });
         return;
       }
 
@@ -118,21 +150,15 @@ function rule(context) {
       } = requireModuleParser();
       const flowParser = require('flow-parser');
 
-      const [parsingErrors, tryParse] = createParserErrorCapturer();
+      const [parsingErrors, guard] = createParserErrorCapturer();
 
       const sourceCode = context.getSourceCode().getText();
       const ast = flowParser.parse(sourceCode);
-
-      tryParse(() => {
-        buildModuleSchema(hasteModuleName, ast, tryParse);
-      });
-
+      guard(() => buildModuleSchema(hasteModuleName, [], ast, guard));
       parsingErrors.forEach(error => {
-        error.nodes.forEach(flowNode => {
-          context.report({
-            loc: flowNode.loc,
-            message: error.message,
-          });
+        context.report({
+          loc: error.node.loc,
+          message: error.message,
         });
       });
     },
@@ -141,14 +167,82 @@ function rule(context) {
         return;
       }
 
-      isModule = true;
-    },
-    InterfaceExtends(node) {
-      if (node.id.name !== 'TurboModule') {
+      moduleRequires.push(node);
+
+      /**
+       * Validate that NativeModule requires are typed
+       */
+
+      const {typeArguments} = node;
+
+      if (typeArguments == null) {
+        const methodName = node.callee.property.name;
+        context.report({
+          node,
+          message: ERRORS.untypedModuleRequire(hasteModuleName, methodName),
+        });
         return;
       }
 
-      isModule = true;
+      if (typeArguments.type !== 'TypeParameterInstantiation') {
+        return;
+      }
+
+      const [param] = typeArguments.params;
+
+      /**
+       * Validate that NativeModule requires are correctly typed
+       */
+
+      if (
+        typeArguments.params.length !== 1 ||
+        param.type !== 'GenericTypeAnnotation' ||
+        param.id.name !== 'Spec'
+      ) {
+        const methodName = node.callee.property.name;
+        context.report({
+          node,
+          message: ERRORS.incorrectlyTypedModuleRequire(
+            hasteModuleName,
+            methodName,
+          ),
+        });
+        return;
+      }
+
+      /**
+       * Validate the TurboModuleRegistry.get<Spec>(...) argument
+       */
+
+      if (node.arguments.length === 1) {
+        const methodName = node.callee.property.name;
+
+        if (node.arguments[0].type !== 'Literal') {
+          context.report({
+            node: node.arguments[0],
+            message: ERRORS.calledModuleRequireWithWrongType(
+              hasteModuleName,
+              methodName,
+              node.arguments[0].type,
+            ),
+          });
+          return;
+        }
+
+        if (typeof node.arguments[0].value !== 'string') {
+          context.report({
+            node: node.arguments[0],
+            message: ERRORS.calledModuleRequireWithWrongLiteral(
+              hasteModuleName,
+              methodName,
+              node.arguments[0].value,
+            ),
+          });
+          return;
+        }
+      }
+
+      return true;
     },
   };
 }

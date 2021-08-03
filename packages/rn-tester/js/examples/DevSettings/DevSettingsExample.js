@@ -8,6 +8,8 @@
  * @flow
  */
 
+'use strict';
+
 import * as React from 'react';
 import {Alert, Button, DevSettings} from 'react-native';
 

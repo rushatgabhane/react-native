@@ -34,17 +34,21 @@ exports[`<ScrollView /> should render as expected: should deep render when not m
   onTouchMove={[Function]}
   onTouchStart={[Function]}
   pagingEnabled={false}
+  scrollBarThumbImage={null}
   scrollViewRef={null}
   sendMomentumEvents={false}
   snapToEnd={true}
   snapToStart={true}
   style={
-    Object {
-      "flexDirection": "column",
-      "flexGrow": 1,
-      "flexShrink": 1,
-      "overflow": "scroll",
-    }
+    Array [
+      Object {
+        "flexDirection": "column",
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "overflow": "scroll",
+      },
+      undefined,
+    ]
   }
 >
   <RCTScrollContentView

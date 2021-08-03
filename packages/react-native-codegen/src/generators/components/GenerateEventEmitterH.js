@@ -21,8 +21,7 @@ const {
 import type {
   ComponentShape,
   EventTypeShape,
-  NamedShape,
-  EventTypeAnnotation,
+  EventObjectPropertyType,
   SchemaType,
 } from '../../CodegenSchema';
 
@@ -100,10 +99,10 @@ function indent(nice: string, spaces: number) {
 
 function getNativeTypeFromAnnotation(
   componentName: string,
-  eventProperty: NamedShape<EventTypeAnnotation>,
+  eventProperty: EventObjectPropertyType,
   nameParts: $ReadOnlyArray<string>,
 ): string {
-  const {type} = eventProperty.typeAnnotation;
+  const type = eventProperty.type;
 
   switch (type) {
     case 'BooleanTypeAnnotation':
@@ -124,13 +123,15 @@ function getNativeTypeFromAnnotation(
 function generateEnum(structs, options, nameParts) {
   const structName = generateEventStructName(nameParts);
   const fields = options
-    .map((option, index) => `${toSafeCppString(option)}`)
+    .map((option, index) => `${toSafeCppString(option.name)}`)
     .join(',\n  ');
 
   const toCases = options
     .map(
       option =>
-        `case ${structName}::${toSafeCppString(option)}: return "${option}";`,
+        `case ${structName}::${toSafeCppString(option.name)}: return "${
+          option.name
+        }";`,
     )
     .join('\n' + '    ');
 
@@ -147,7 +148,7 @@ function generateStruct(
   structs: StructsMap,
   componentName: string,
   nameParts: $ReadOnlyArray<string>,
-  properties: $ReadOnlyArray<NamedShape<EventTypeAnnotation>>,
+  properties: $ReadOnlyArray<EventObjectPropertyType>,
 ): void {
   const structNameParts = nameParts;
   const structName = generateEventStructName(structNameParts);
@@ -162,17 +163,13 @@ function generateStruct(
     })
     .join('\n' + '  ');
 
-  properties.forEach(property => {
-    const {name, typeAnnotation} = property;
-    switch (typeAnnotation.type) {
+  properties.forEach((property: EventObjectPropertyType) => {
+    const name = property.name;
+    switch (property.type) {
       case 'BooleanTypeAnnotation':
-        return;
       case 'StringTypeAnnotation':
-        return;
       case 'Int32TypeAnnotation':
-        return;
       case 'DoubleTypeAnnotation':
-        return;
       case 'FloatTypeAnnotation':
         return;
       case 'ObjectTypeAnnotation':
@@ -180,16 +177,16 @@ function generateStruct(
           structs,
           componentName,
           nameParts.concat([name]),
-          nullthrows(typeAnnotation.properties),
+          nullthrows(property.properties),
         );
         return;
       case 'StringEnumTypeAnnotation':
-        generateEnum(structs, typeAnnotation.options, nameParts.concat([name]));
+        generateEnum(structs, property.options, nameParts.concat([name]));
         return;
       default:
-        (typeAnnotation.type: empty);
+        (property: empty);
         throw new Error(
-          `Received invalid event property type ${typeAnnotation.type}`,
+          `Received invalid event property type ${property.type}`,
         );
     }
   });
@@ -238,8 +235,8 @@ module.exports = {
   generate(
     libraryName: string,
     schema: SchemaType,
+    moduleSpecName: string,
     packageName?: string,
-    assumeNonnull: boolean = false,
   ): FilesOutput {
     const moduleComponents: ComponentCollection = Object.keys(schema.modules)
       .map(moduleName => {

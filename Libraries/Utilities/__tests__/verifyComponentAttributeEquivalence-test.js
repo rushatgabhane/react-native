@@ -10,13 +10,12 @@
 
 'use strict';
 
-jest.dontMock('../verifyComponentAttributeEquivalence');
-
+const getNativeComponentAttributes = require('../../ReactNative/getNativeComponentAttributes');
 const verifyComponentAttributeEquivalence = require('../verifyComponentAttributeEquivalence')
   .default;
 
-const TestComponentNativeViewConfig = {
-  uiViewClassName: 'TestComponent',
+jest.dontMock('../verifyComponentAttributeEquivalence');
+jest.mock('../../ReactNative/getNativeComponentAttributes', () => () => ({
   NativeProps: {
     value: 'BOOL',
   },
@@ -41,63 +40,62 @@ const TestComponentNativeViewConfig = {
     },
     transform: 'CATransform3D',
   },
-};
+}));
+
+beforeEach(() => {
+  global.__DEV__ = true;
+  console.error = jest.fn();
+  jest.resetModules();
+});
 
 describe('verifyComponentAttributeEquivalence', () => {
-  beforeEach(() => {
-    global.__DEV__ = true;
-    console.error = jest.fn();
-    jest.resetModules();
-  });
-
-  it('should not verify in prod', () => {
+  test('should not verify in prod', () => {
     global.__DEV__ = false;
-    verifyComponentAttributeEquivalence(TestComponentNativeViewConfig, {});
+    verifyComponentAttributeEquivalence('TestComponent', {});
   });
 
-  it('should not error with native config that is a subset of the given config', () => {
-    const configWithAdditionalProperties = {
-      ...TestComponentNativeViewConfig,
-      bubblingEventTypes: {
-        ...TestComponentNativeViewConfig.bubblingEventTypes,
-        topFocus: {
-          phasedRegistrationNames: {
-            bubbled: 'onFocus',
-            captured: 'onFocusCapture',
-          },
-        },
-      },
-      directEventTypes: {
-        ...TestComponentNativeViewConfig.directEventTypes,
-        topSlidingComplete: {
-          registrationName: 'onSlidingComplete',
-        },
-      },
-      validAttributes: {
-        ...TestComponentNativeViewConfig.validAttributes,
-        active: true,
+  test('should not error with native config that is a subset of the given config', () => {
+    const configWithAdditionalProperties = getNativeComponentAttributes(
+      'TestComponent',
+    );
+
+    configWithAdditionalProperties.bubblingEventTypes.topFocus = {
+      phasedRegistrationNames: {
+        bubbled: 'onFocus',
+        captured: 'onFocusCapture',
       },
     };
+
+    configWithAdditionalProperties.directEventTypes.topSlidingComplete = {
+      registrationName: 'onSlidingComplete',
+    };
+
+    configWithAdditionalProperties.validAttributes.active = true;
+
     verifyComponentAttributeEquivalence(
-      TestComponentNativeViewConfig,
+      'TestComponent',
+      configWithAdditionalProperties,
+    );
+    verifyComponentAttributeEquivalence(
+      'TestComponent',
       configWithAdditionalProperties,
     );
 
     expect(console.error).not.toBeCalled();
   });
 
-  it('should error if given config is missing native config properties', () => {
-    verifyComponentAttributeEquivalence(TestComponentNativeViewConfig, {});
+  test('should error if given config is missing native config properties', () => {
+    verifyComponentAttributeEquivalence('TestComponent', {});
 
     expect(console.error).toBeCalledTimes(3);
     expect(console.error).toBeCalledWith(
-      "'TestComponent' has a view config that does not match native. 'validAttributes' is missing: borderColor, style",
+      'TestComponent generated view config for directEventTypes does not match native, missing: topAccessibilityAction',
     );
     expect(console.error).toBeCalledWith(
-      "'TestComponent' has a view config that does not match native. 'bubblingEventTypes' is missing: topChange",
+      'TestComponent generated view config for bubblingEventTypes does not match native, missing: topChange',
     );
     expect(console.error).toBeCalledWith(
-      "'TestComponent' has a view config that does not match native. 'directEventTypes' is missing: topAccessibilityAction",
+      'TestComponent generated view config for validAttributes does not match native, missing: borderColor style',
     );
   });
 });

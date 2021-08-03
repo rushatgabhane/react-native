@@ -7,6 +7,8 @@
  * @format
  */
 
+'use strict';
+
 import React, {useState} from 'react';
 import {Alert, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 

@@ -10,9 +10,6 @@
 
 'use strict';
 
-const ExceptionsManager = require('../ExceptionsManager');
-const NativeExceptionsManager = require('../NativeExceptionsManager').default;
-const ReactFiberErrorDialog = require('../ReactFiberErrorDialog').default;
 const fs = require('fs');
 const path = require('path');
 
@@ -26,8 +23,10 @@ const capturedErrorDefaults = {
 };
 
 describe('ExceptionsManager', () => {
-  let nativeReportException;
-
+  let ReactFiberErrorDialog,
+    ExceptionsManager,
+    NativeExceptionsManager,
+    nativeReportException;
   beforeEach(() => {
     jest.resetModules();
     jest.mock('../NativeExceptionsManager', () => {
@@ -47,8 +46,11 @@ describe('ExceptionsManager', () => {
           return {stack};
         },
     );
-    jest.spyOn(console, 'error').mockReturnValue(undefined);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    ReactFiberErrorDialog = require('../ReactFiberErrorDialog');
+    NativeExceptionsManager = require('../NativeExceptionsManager').default;
     nativeReportException = NativeExceptionsManager.reportException;
+    ExceptionsManager = require('../ExceptionsManager');
   });
 
   afterEach(() => {
@@ -358,27 +360,6 @@ describe('ExceptionsManager', () => {
       expect(mockError.mock.calls[0]).toEqual(args);
     });
 
-    test('logging a warning-looking object', () => {
-      // Forces `strignifySafe` to invoke `toString()`.
-      const object = {toString: () => 'Warning: Some error may have happened'};
-      object.cycle = object;
-
-      const args = [object];
-
-      console.error(...args);
-
-      expect(nativeReportException).toHaveBeenCalled();
-    });
-
-    test('does not log "warn"-type errors', () => {
-      const error = new Error('This is a warning.');
-      error.type = 'warn';
-
-      console.error(error);
-
-      expect(nativeReportException).not.toHaveBeenCalled();
-    });
-
     test('reportErrorsAsExceptions = false', () => {
       console.reportErrorsAsExceptions = false;
       const message = 'Some error happened';
@@ -478,15 +459,6 @@ describe('ExceptionsManager', () => {
       expect(getLineFromFrame(exceptionData.stack[0])).toBe(
         "const error = new Error('Some error happened');",
       );
-    });
-
-    test('logs fatal "warn"-type errors', () => {
-      const error = new Error('This is a fatal... warning?');
-      error.type = 'warn';
-
-      ExceptionsManager.handleException(error, true);
-
-      expect(nativeReportException).toHaveBeenCalled();
     });
   });
 

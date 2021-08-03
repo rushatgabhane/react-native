@@ -23,11 +23,10 @@ const {
   Switch,
   Alert,
 } = require('react-native');
-import type {KeyboardType} from 'react-native/Libraries/Components/TextInput/TextInput';
 
 const TextInputSharedExamples = require('./TextInputSharedExamples.js');
 
-import type {RNTesterModuleExample} from '../../types/RNTesterTypes';
+import type {RNTesterExampleModuleItem} from '../../types/RNTesterTypes';
 
 class WithLabel extends React.Component<$FlowFixMeProps> {
   render() {
@@ -42,10 +41,7 @@ class WithLabel extends React.Component<$FlowFixMeProps> {
   }
 }
 
-class TextInputAccessoryViewChangeTextExample extends React.Component<
-  {...},
-  {text: string},
-> {
+class TextInputAccessoryViewExample extends React.Component<{...}, *> {
   constructor(props) {
     super(props);
     this.state = {text: 'Placeholder Text'};
@@ -55,7 +51,6 @@ class TextInputAccessoryViewChangeTextExample extends React.Component<
     const inputAccessoryViewID = 'inputAccessoryView1';
     return (
       <View>
-        <Text>Set InputAccessoryView with ID & reset text:</Text>
         <TextInput
           style={styles.default}
           inputAccessoryViewID={inputAccessoryViewID}
@@ -71,70 +66,6 @@ class TextInputAccessoryViewChangeTextExample extends React.Component<
           </View>
         </InputAccessoryView>
       </View>
-    );
-  }
-}
-
-class TextInputAccessoryViewChangeKeyboardExample extends React.Component<
-  {...},
-  {keyboardType: string, text: string},
-> {
-  constructor(props) {
-    super(props);
-    this.state = {text: '', keyboardType: 'default'};
-  }
-
-  _switchKeyboard = () => {
-    this.setState({
-      keyboardType:
-        this.state.keyboardType === 'default' ? 'number-pad' : 'default',
-    });
-  };
-
-  render() {
-    const inputAccessoryViewID = 'inputAccessoryView2';
-    return (
-      <View>
-        <Text>Set InputAccessoryView with ID & switch keyboard:</Text>
-        <TextInput
-          style={styles.default}
-          inputAccessoryViewID={inputAccessoryViewID}
-          onChangeText={text => this.setState({text})}
-          value={this.state.text}
-          // $FlowFixMe[incompatible-type]
-          keyboardType={this.state.keyboardType}
-          returnKeyType="done"
-        />
-        <InputAccessoryView nativeID={inputAccessoryViewID}>
-          <View style={{backgroundColor: 'white'}}>
-            <Button onPress={this._switchKeyboard} title="Switch Keyboard" />
-          </View>
-        </InputAccessoryView>
-      </View>
-    );
-  }
-}
-
-class TextInputAccessoryViewDefaultDoneButtonExample extends React.Component<
-  $ReadOnly<{|
-    keyboardType: KeyboardType,
-  |}>,
-  {text: string},
-> {
-  constructor(props) {
-    super(props);
-    this.state = {text: ''};
-  }
-
-  render() {
-    return (
-      <TextInput
-        style={styles.default}
-        onChangeText={text => this.setState({text})}
-        value={this.state.text}
-        keyboardType={this.props.keyboardType}
-        returnKeyType="done"
-      />
     );
   }
 }
@@ -337,36 +268,9 @@ exports.examples = ([
     },
   },
   {
-    title: 'Keyboard Input Accessory View',
+    title: 'Keyboard Accessory View',
     render: function(): React.Node {
-      return (
-        <View>
-          <TextInputAccessoryViewChangeTextExample />
-          <TextInputAccessoryViewChangeKeyboardExample />
-        </View>
-      );
-    },
-  },
-  {
-    title: "Default Input Accessory View with returnKeyType = 'done'",
-    render: function(): React.Node {
-      const keyboardTypesWithDoneButton = [
-        'number-pad',
-        'phone-pad',
-        'decimal-pad',
-        'ascii-capable-number-pad',
-      ];
-      const examples = keyboardTypesWithDoneButton.map(type => {
-        return (
-          <WithLabel key={'keyboardType: ' + type} label={type}>
-            <TextInputAccessoryViewDefaultDoneButtonExample
-              key={type}
-              keyboardType={type}
-            />
-          </WithLabel>
-        );
-      });
-      return <View>{examples}</View>;
+      return <TextInputAccessoryViewExample />;
     },
   },
   {
@@ -817,4 +721,4 @@ exports.examples = ([
       );
     },
   },
-]: Array<RNTesterModuleExample>);
+]: Array<RNTesterExampleModuleItem>);

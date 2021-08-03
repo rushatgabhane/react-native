@@ -10,9 +10,9 @@
 
 'use strict';
 
-import type {RNTesterModuleInfo} from '../types/RNTesterTypes';
+import type {RNTesterExample} from '../types/RNTesterTypes';
 
-const Components: Array<RNTesterModuleInfo> = [
+const ComponentExamples: Array<RNTesterExample> = [
   {
     key: 'ActivityIndicatorExample',
     category: 'UI',
@@ -27,21 +27,6 @@ const Components: Array<RNTesterModuleInfo> = [
     key: 'FlatListExample',
     category: 'ListView',
     module: require('../examples/FlatList/FlatListExample'),
-  },
-  {
-    key: 'FlatList-withSeparators',
-    module: require('../examples/FlatList/FlatList-withSeparators'),
-    category: 'ListView',
-  },
-  {
-    key: 'FlatList-onViewableItemsChanged',
-    module: require('../examples/FlatList/FlatList-onViewableItemsChanged'),
-    category: 'ListView',
-  },
-  {
-    key: 'FlatList-onEndReached',
-    module: require('../examples/FlatList/FlatList-onEndReached'),
-    category: 'ListView',
   },
   {
     key: 'ImageExample',
@@ -97,17 +82,12 @@ const Components: Array<RNTesterModuleInfo> = [
   {
     key: 'SectionListExample',
     category: 'ListView',
-    module: require('../examples/SectionList/SectionListIndex'),
+    module: require('../examples/SectionList/SectionListExample'),
   },
   {
     key: 'StatusBarExample',
     category: 'UI',
     module: require('../examples/StatusBar/StatusBarExample'),
-  },
-  {
-    key: 'SwipeableCardExample',
-    category: 'UI',
-    module: require('../examples/SwipeableCardExample/SwipeableCardExample'),
   },
   {
     key: 'SwitchExample',
@@ -136,7 +116,7 @@ const Components: Array<RNTesterModuleInfo> = [
   },
 ];
 
-const APIs: Array<RNTesterModuleInfo> = [
+const APIExamples: Array<RNTesterExample> = [
   {
     key: 'AccessibilityExample',
     category: 'Basic',
@@ -153,14 +133,14 @@ const APIs: Array<RNTesterModuleInfo> = [
     module: require('../examples/Alert/AlertExample'),
   },
   {
-    key: 'AnimatedIndex',
+    key: 'AnimatedExample',
     category: 'UI',
-    module: require('../examples/Animated/AnimatedIndex').default,
+    module: require('../examples/Animated/AnimatedExample'),
   },
   {
     key: 'Animation - GratuitousAnimation',
     category: 'UI',
-    module: require('../examples/AnimatedGratuitousApp/AnExApp'),
+    module: require('../examples/Animated/AnimatedGratuitousApp/AnExApp'),
   },
   {
     key: 'AppearanceExample',
@@ -285,7 +265,7 @@ const APIs: Array<RNTesterModuleInfo> = [
 ];
 
 if (global.__turboModuleProxy) {
-  APIs.push({
+  APIExamples.push({
     key: 'TurboModuleExample',
     category: 'Basic',
     module: require('../examples/TurboModule/TurboModuleExample'),
@@ -294,13 +274,13 @@ if (global.__turboModuleProxy) {
 
 const Modules: any = {};
 
-APIs.concat(Components).forEach(Example => {
+APIExamples.concat(ComponentExamples).forEach(Example => {
   Modules[Example.key] = Example.module;
 });
 
 const RNTesterList = {
-  APIs,
-  Components,
+  APIExamples,
+  ComponentExamples,
   Modules,
 };
 

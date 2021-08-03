@@ -14,7 +14,6 @@ exports[`<Modal /> should render as <RCTModalHostView> when not mocked 1`] = `
   animationType="none"
   hardwareAccelerated={false}
   identifier={1}
-  onDismiss={[Function]}
   onStartShouldSetResponder={[Function]}
   presentationStyle="fullScreen"
   style={
@@ -22,7 +21,6 @@ exports[`<Modal /> should render as <RCTModalHostView> when not mocked 1`] = `
       "position": "absolute",
     }
   }
-  visible={true}
 >
   <View
     collapsable={false}

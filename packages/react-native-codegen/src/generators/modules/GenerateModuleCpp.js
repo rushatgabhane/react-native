@@ -12,9 +12,8 @@
 
 import type {
   SchemaType,
-  Nullable,
-  NamedShape,
-  NativeModulePropertyShape,
+  NativeModulePropertySchema,
+  NativeModuleMethodParamSchema,
   NativeModuleFunctionTypeAnnotation,
   NativeModuleParamTypeAnnotation,
 } from '../../CodegenSchema';
@@ -51,12 +50,14 @@ const ModuleTemplate = ({
   hostFunctions,
   moduleName,
   methods,
-}: $ReadOnly<{
+}: $ReadOnly<{|
   hasteModuleName: string,
   hostFunctions: $ReadOnlyArray<string>,
   moduleName: string,
-  methods: $ReadOnlyArray<$ReadOnly<{methodName: string, paramCount: number}>>,
-}>) => {
+  methods: $ReadOnlyArray<
+    $ReadOnly<{|methodName: string, paramCount: number|}>,
+  >,
+|}>) => {
   return `${hostFunctions.join('\n')}
 
 ${hasteModuleName}CxxSpecJSI::${hasteModuleName}CxxSpecJSI(std::shared_ptr<CallInvoker> jsInvoker)
@@ -98,10 +99,8 @@ ${modules}
 `;
 };
 
-type Param = NamedShape<Nullable<NativeModuleParamTypeAnnotation>>;
-
 function serializeArg(
-  arg: Param,
+  arg: NativeModuleMethodParamSchema,
   index: number,
   resolveAlias: AliasResolver,
 ): string {
@@ -119,7 +118,7 @@ function serializeArg(
   }
 
   switch (realTypeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (realTypeAnnotation.name) {
         case 'RootTag':
           return wrap('.getNumber()');
@@ -159,7 +158,7 @@ function serializeArg(
 
 function serializePropertyIntoHostFunction(
   hasteModuleName: string,
-  property: NativeModulePropertyShape,
+  property: NativeModulePropertySchema,
   resolveAlias: AliasResolver,
 ): string {
   const [
@@ -184,8 +183,8 @@ module.exports = {
   generate(
     libraryName: string,
     schema: SchemaType,
+    moduleSpecName: string,
     packageName?: string,
-    assumeNonnull: boolean = false,
   ): FilesOutput {
     const nativeModules = getModules(schema);
 

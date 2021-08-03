@@ -8,6 +8,8 @@
  * @format
  */
 
+'use strict';
+
 import type {
   RootTag,
   TurboModule,

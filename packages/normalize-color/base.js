@@ -40,9 +40,7 @@ function normalizeColorBase(color: ?string | number): null | number {
     return (
       // b
       ((parse255(match[1]) << 24) | // r
-      // $FlowFixMe[incompatible-use]
       (parse255(match[2]) << 16) | // g
-        // $FlowFixMe[incompatible-use]
         (parse255(match[3]) << 8) |
         0x000000ff) >>> // a
       0
@@ -53,11 +51,8 @@ function normalizeColorBase(color: ?string | number): null | number {
     return (
       // b
       ((parse255(match[1]) << 24) | // r
-      // $FlowFixMe[incompatible-use]
       (parse255(match[2]) << 16) | // g
-        // $FlowFixMe[incompatible-use]
         (parse255(match[3]) << 8) |
-        // $FlowFixMe[incompatible-use]
         parse1(match[4])) >>> // a
       0
     );
@@ -103,9 +98,7 @@ function normalizeColorBase(color: ?string | number): null | number {
     return (
       (hslToRgb(
         parse360(match[1]), // h
-        // $FlowFixMe[incompatible-use]
         parsePercentage(match[2]), // s
-        // $FlowFixMe[incompatible-use]
         parsePercentage(match[3]), // l
       ) |
         0x000000ff) >>> // a
@@ -117,12 +110,9 @@ function normalizeColorBase(color: ?string | number): null | number {
     return (
       (hslToRgb(
         parse360(match[1]), // h
-        // $FlowFixMe[incompatible-use]
         parsePercentage(match[2]), // s
-        // $FlowFixMe[incompatible-use]
         parsePercentage(match[3]), // l
       ) |
-        // $FlowFixMe[incompatible-use]
         parse1(match[4])) >>> // a
       0
     );

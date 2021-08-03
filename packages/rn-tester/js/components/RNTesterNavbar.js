@@ -15,11 +15,9 @@ import {RNTesterThemeContext} from './RNTesterTheme';
 
 const BookmarkTab = ({handleNavBarPress, isBookmarkActive, theme}) => (
   <View style={styles.centerBox}>
-    <View
-      style={[
-        styles.centralBoxCutout,
-        {backgroundColor: theme.BackgroundColor},
-      ]}
+    <Image
+      style={styles.centralBoxCutout}
+      source={require('./../assets/bottom-nav-center-box.png')}
     />
     <View style={styles.floatContainer}>
       <Pressable
@@ -135,8 +133,6 @@ const RNTesterNavbar = ({
   );
 };
 
-export const navBarHeight = 65;
-
 const styles = StyleSheet.create({
   floatContainer: {
     flex: 1,
@@ -195,11 +191,11 @@ const styles = StyleSheet.create({
   },
   centerBox: {
     flex: 1,
-    height: navBarHeight,
+    height: 65,
   },
   navButton: {
     flex: 1,
-    height: navBarHeight,
+    height: 65,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -211,4 +207,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RNTesterNavbar;
+module.exports = RNTesterNavbar;

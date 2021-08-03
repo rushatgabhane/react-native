@@ -12,9 +12,9 @@
 
 import type {
   Nullable,
-  NamedShape,
   SchemaType,
-  NativeModulePropertyShape,
+  NativeModulePropertySchema,
+  NativeModuleMethodParamSchema,
   NativeModuleReturnTypeAnnotation,
   NativeModuleFunctionTypeAnnotation,
   NativeModuleParamTypeAnnotation,
@@ -27,12 +27,12 @@ const {unwrapNullable} = require('../../parsers/flow/modules/utils');
 type FilesOutput = Map<string, string>;
 
 function FileTemplate(
-  config: $ReadOnly<{
+  config: $ReadOnly<{|
     packageName: string,
     className: string,
     methods: string,
     imports: string,
-  }>,
+  |}>,
 ): string {
   const {packageName, className, methods, imports} = config;
   return `
@@ -62,14 +62,14 @@ ${methods}
 }
 
 function MethodTemplate(
-  config: $ReadOnly<{
+  config: $ReadOnly<{|
     abstract: boolean,
     methodBody: ?string,
     methodJavaAnnotation: string,
     methodName: string,
     translatedReturnType: string,
     traversedArgs: Array<string>,
-  }>,
+  |}>,
 ): string {
   const {
     abstract,
@@ -91,10 +91,8 @@ function MethodTemplate(
   )})${methodClosing}`;
 }
 
-type Param = NamedShape<Nullable<NativeModuleParamTypeAnnotation>>;
-
 function translateFunctionParamToJavaType(
-  param: Param,
+  param: NativeModuleMethodParamSchema,
   createErrorMessage: (typeName: string) => string,
   resolveAlias: AliasResolver,
   imports: Set<string>,
@@ -120,7 +118,7 @@ function translateFunctionParamToJavaType(
   }
 
   switch (realTypeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (realTypeAnnotation.name) {
         case 'RootTag':
           return !isRequired ? 'Double' : 'double';
@@ -190,7 +188,7 @@ function translateFunctionReturnTypeToJavaType(
   }
 
   switch (realTypeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (realTypeAnnotation.name) {
         case 'RootTag':
           return nullable ? 'Double' : 'double';
@@ -247,7 +245,7 @@ function getFalsyReturnStatementFromReturnType(
   }
 
   switch (realTypeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (realTypeAnnotation.name) {
         case 'RootTag':
           return 'return 0.0;';
@@ -285,7 +283,7 @@ function getFalsyReturnStatementFromReturnType(
 
 // Build special-cased runtime check for getConstants().
 function buildGetConstantsMethod(
-  method: NativeModulePropertyShape,
+  method: NativeModulePropertySchema,
   imports: Set<string>,
 ): string {
   const [
@@ -339,7 +337,6 @@ function buildGetConstantsMethod(
     return `  protected abstract Map<String, Object> getTypedExportedConstants();
 
   @Override
-  @DoNotStrip
   public final @Nullable Map<String, Object> getConstants() {
     Map<String, Object> constants = getTypedExportedConstants();
     if (ReactBuildConfig.DEBUG || ReactBuildConfig.IS_INTERNAL_BUILD) {
@@ -368,15 +365,14 @@ module.exports = {
   generate(
     libraryName: string,
     schema: SchemaType,
+    moduleSpecName: string,
     packageName?: string,
-    assumeNonnull: boolean = false,
   ): FilesOutput {
     const files = new Map();
-    const nativeModules = getModules(schema);
-
     const normalizedPackageName =
-      packageName == null ? 'com.facebook.fbreact.specs' : packageName;
+      packageName != null ? packageName : 'com.facebook.fbreact.specs';
     const outputDir = `java/${normalizedPackageName.replace(/\./g, '/')}`;
+    const nativeModules = getModules(schema);
 
     Object.keys(nativeModules).forEach(hasteModuleName => {
       const {
@@ -397,7 +393,6 @@ module.exports = {
         'com.facebook.react.bridge.ReactMethod',
         'com.facebook.react.bridge.ReactModuleWithSpec',
         'com.facebook.react.turbomodule.core.interfaces.TurboModule',
-        'com.facebook.proguard.annotations.DoNotStrip',
       ]);
 
       const methods = properties.map(method => {
@@ -446,7 +441,7 @@ module.exports = {
 
         const methodJavaAnnotation = `@ReactMethod${
           isSyncMethod ? '(isBlockingSynchronousMethod = true)' : ''
-        }\n  @DoNotStrip`;
+        }`;
         const methodBody = method.optional
           ? getFalsyReturnStatementFromReturnType(
               methodTypeAnnotation.returnTypeAnnotation,

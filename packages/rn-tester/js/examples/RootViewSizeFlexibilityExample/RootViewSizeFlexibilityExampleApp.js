@@ -33,7 +33,6 @@ class RootViewSizeFlexibilityExampleApp extends React.Component<
       : styles.smallContainer;
 
     return (
-      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       <TouchableHighlight onPress={this._onPressButton.bind(this)}>
         <View style={viewStyle}>
           <View style={styles.center}>

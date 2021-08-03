@@ -16,7 +16,6 @@ import type {SyntheticEvent} from '../../Types/CoreEventTypes';
 export type AccessibilityRole =
   | 'none'
   | 'button'
-  | 'togglebutton'
   | 'link'
   | 'search'
   | 'image'
@@ -41,7 +40,6 @@ export type AccessibilityRole =
   | 'tab'
   | 'tablist'
   | 'timer'
-  | 'list'
   | 'toolbar';
 
 // the info associated with an accessibility action

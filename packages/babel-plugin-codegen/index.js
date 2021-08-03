@@ -53,7 +53,7 @@ function isCodegenDeclaration(declaration) {
   return false;
 }
 
-module.exports = function({parse, types: t}) {
+module.exports = function(context) {
   return {
     pre(state) {
       this.code = state.code;
@@ -118,16 +118,12 @@ module.exports = function({parse, types: t}) {
           this.defaultExport = path;
         }
       },
-
       Program: {
-        exit(path) {
+        exit() {
           if (this.defaultExport) {
             const viewConfig = generateViewConfig(this.filename, this.code);
             this.defaultExport.replaceWithMultiple(
-              parse(viewConfig, {
-                babelrc: false,
-                browserslistConfigFile: false,
-              }).program.body,
+              context.parse(viewConfig).program.body,
             );
             if (this.commandsExport != null) {
               this.commandsExport.remove();

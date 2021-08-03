@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow weak
  */
 
 'use strict';
@@ -110,12 +110,9 @@ class PanResponderExample extends React.Component<Props, State> {
             }}
             style={[
               styles.circle,
-              // $FlowFixMe[incompatible-type]
               {
-                transform: [
-                  {translateX: this.state.left},
-                  {translateY: this.state.top},
-                ],
+                translateX: this.state.left,
+                translateY: this.state.top,
                 backgroundColor: this.state.pressed ? 'blue' : 'green',
               },
             ]}
@@ -148,9 +145,11 @@ exports.category = 'Basic';
 exports.documentationURL = 'https://reactnative.dev/docs/panresponder';
 exports.description =
   'Shows the Use of PanResponder to provide basic gesture handling';
+exports.simpleExampleContainer = true;
 exports.examples = [
   {
     title: 'Basic gesture handling',
+    // $FlowFixMe[value-as-type]
     render: function(): React.Element<typeof PanResponderExample> {
       return <PanResponderExample />;
     },

@@ -7,9 +7,7 @@
 
 #pragma once
 
-#include <better/optional.h>
 #include <cinttypes>
-#include <string>
 
 namespace facebook {
 namespace react {
@@ -46,11 +44,6 @@ constexpr enum AccessibilityTraits operator&(
     const enum AccessibilityTraits rhs) {
   return (enum AccessibilityTraits)((uint32_t)lhs & (uint32_t)rhs);
 }
-
-struct AccessibilityAction {
-  std::string name{""};
-  better::optional<std::string> label{};
-};
 
 struct AccessibilityState {
   bool disabled{false};

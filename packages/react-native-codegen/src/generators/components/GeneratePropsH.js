@@ -23,8 +23,7 @@ const {
 
 import type {
   ExtendsPropsShape,
-  NamedShape,
-  PropTypeAnnotation,
+  PropTypeShape,
   SchemaType,
 } from '../../CodegenSchema';
 
@@ -60,7 +59,7 @@ const classTemplate = `
 class ::_CLASSNAME_:: final::_EXTEND_CLASSES_:: {
  public:
   ::_CLASSNAME_::() = default;
-  ::_CLASSNAME_::(const PropsParserContext& context, const ::_CLASSNAME_:: &sourceProps, const RawProps &rawProps);
+  ::_CLASSNAME_::(const ::_CLASSNAME_:: &sourceProps, const RawProps &rawProps);
 
 #pragma mark - Props
 
@@ -71,7 +70,7 @@ class ::_CLASSNAME_:: final::_EXTEND_CLASSES_:: {
 const enumTemplate = `
 enum class ::_ENUM_NAME_:: { ::_VALUES_:: };
 
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, ::_ENUM_NAME_:: &result) {
+static inline void fromRawValue(const RawValue &value, ::_ENUM_NAME_:: &result) {
   auto string = (std::string)value;
   ::_FROM_CASES_::
   abort();
@@ -87,7 +86,7 @@ static inline std::string toString(const ::_ENUM_NAME_:: &value) {
 const intEnumTemplate = `
 enum class ::_ENUM_NAME_:: { ::_VALUES_:: };
 
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, ::_ENUM_NAME_:: &result) {
+static inline void fromRawValue(const RawValue &value, ::_ENUM_NAME_:: &result) {
   assert(value.hasType<int>());
   auto integerValue = (int)value;
   switch (integerValue) {::_FROM_CASES_::
@@ -106,7 +105,7 @@ const structTemplate = `struct ::_STRUCT_NAME_:: {
   ::_FIELDS_::
 };
 
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, ::_STRUCT_NAME_:: &result) {
+static inline void fromRawValue(const RawValue &value, ::_STRUCT_NAME_:: &result) {
   auto map = (better::map<std::string, RawValue>)value;
 
   ::_FROM_CASES_::
@@ -117,23 +116,23 @@ static inline std::string toString(const ::_STRUCT_NAME_:: &value) {
 }
 `.trim();
 
-const arrayConversionFunction = `static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, std::vector<::_STRUCT_NAME_::> &result) {
+const arrayConversionFunction = `static inline void fromRawValue(const RawValue &value, std::vector<::_STRUCT_NAME_::> &result) {
   auto items = (std::vector<RawValue>)value;
   for (const auto &item : items) {
     ::_STRUCT_NAME_:: newItem;
-    fromRawValue(context, item, newItem);
+    fromRawValue(item, newItem);
     result.emplace_back(newItem);
   }
 }
 `;
 
-const doubleArrayConversionFunction = `static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, std::vector<std::vector<::_STRUCT_NAME_::>> &result) {
+const doubleArrayConversionFunction = `static inline void fromRawValue(const RawValue &value, std::vector<std::vector<::_STRUCT_NAME_::>> &result) {
   auto items = (std::vector<std::vector<RawValue>>)value;
   for (const std::vector<RawValue> &item : items) {
     auto nestedArray = std::vector<::_STRUCT_NAME_::>{};
     for (const RawValue &nestedItem : item) {
       ::_STRUCT_NAME_:: newItem;
-      fromRawValue(context, nestedItem, newItem);
+      fromRawValue(nestedItem, newItem);
       nestedArray.emplace_back(newItem);
     }
     result.emplace_back(nestedArray);
@@ -166,7 +165,7 @@ constexpr void operator|=(
   lhs = lhs | static_cast<::_ENUM_MASK_::>(rhs);
 }
 
-static inline void fromRawValue(const PropsParserContext& context, const RawValue &value, ::_ENUM_MASK_:: &result) {
+static inline void fromRawValue(const RawValue &value, ::_ENUM_MASK_:: &result) {
   auto items = std::vector<std::string>{value};
   for (const auto &item : items) {
     ::_FROM_CASES_::
@@ -290,8 +289,9 @@ function convertValueToEnumOption(value: string): string {
 function generateArrayEnumString(
   componentName: string,
   name: string,
-  options: $ReadOnlyArray<string>,
+  enumOptions,
 ): string {
+  const options = enumOptions.map(option => option.name);
   const enumName = getEnumName(componentName, name);
 
   const values = options
@@ -328,7 +328,9 @@ function generateArrayEnumString(
 function generateStringEnum(componentName, prop) {
   const typeAnnotation = prop.typeAnnotation;
   if (typeAnnotation.type === 'StringEnumTypeAnnotation') {
-    const values: $ReadOnlyArray<string> = typeAnnotation.options;
+    const values: $ReadOnlyArray<string> = typeAnnotation.options.map(
+      option => option.name,
+    );
     const enumName = getEnumName(componentName, prop.name);
 
     const fromCases = values
@@ -362,7 +364,9 @@ function generateStringEnum(componentName, prop) {
 function generateIntEnum(componentName, prop) {
   const typeAnnotation = prop.typeAnnotation;
   if (typeAnnotation.type === 'Int32EnumTypeAnnotation') {
-    const values: $ReadOnlyArray<number> = typeAnnotation.options;
+    const values: $ReadOnlyArray<number> = typeAnnotation.options.map(
+      option => option.value,
+    );
     const enumName = getEnumName(componentName, prop.name);
 
     const fromCases = values
@@ -443,7 +447,7 @@ function generateEnumString(componentName: string, component): string {
 
 function generatePropsString(
   componentName: string,
-  props: $ReadOnlyArray<NamedShape<PropTypeAnnotation>>,
+  props: $ReadOnlyArray<PropTypeShape>,
 ) {
   return props
     .map(prop => {
@@ -459,8 +463,6 @@ function getExtendsImports(
   extendsProps: $ReadOnlyArray<ExtendsPropsShape>,
 ): Set<string> {
   const imports: Set<string> = new Set();
-
-  imports.add('#include <react/renderer/core/PropsParserContext.h>');
 
   extendsProps.forEach(extendProps => {
     switch (extendProps.type) {
@@ -485,7 +487,7 @@ function getExtendsImports(
 }
 
 function getLocalImports(
-  properties: $ReadOnlyArray<NamedShape<PropTypeAnnotation>>,
+  properties: $ReadOnlyArray<PropTypeShape>,
 ): Set<string> {
   const imports: Set<string> = new Set();
 
@@ -537,9 +539,7 @@ function getLocalImports(
       const objectProps = typeAnnotation.elementType.properties;
       const objectImports = getImports(objectProps);
       const localImports = getLocalImports(objectProps);
-      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       objectImports.forEach(imports.add, imports);
-      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       localImports.forEach(imports.add, imports);
     }
 
@@ -547,9 +547,7 @@ function getLocalImports(
       imports.add('#include <react/renderer/core/propsConversions.h>');
       const objectImports = getImports(typeAnnotation.properties);
       const localImports = getLocalImports(typeAnnotation.properties);
-      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       objectImports.forEach(imports.add, imports);
-      // $FlowFixMe[method-unbinding] added when improving typing for this parameters
       localImports.forEach(imports.add, imports);
     }
   });
@@ -679,7 +677,7 @@ function generateStruct(
   structs: StructsMap,
   componentName: string,
   nameParts: $ReadOnlyArray<string>,
-  properties: $ReadOnlyArray<NamedShape<PropTypeAnnotation>>,
+  properties: $ReadOnlyArray<PropTypeShape>,
 ): void {
   const structNameParts = nameParts;
   const structName = generateStructName(componentName, structNameParts);
@@ -694,7 +692,7 @@ function generateStruct(
     })
     .join('\n' + '  ');
 
-  properties.forEach((property: NamedShape<PropTypeAnnotation>) => {
+  properties.forEach((property: PropTypeShape) => {
     const name = property.name;
     switch (property.typeAnnotation.type) {
       case 'BooleanTypeAnnotation':
@@ -739,7 +737,7 @@ function generateStruct(
       const variable = property.name;
       return `auto ${variable} = map.find("${property.name}");
   if (${variable} != map.end()) {
-    fromRawValue(context, ${variable}->second, result.${variable});
+    fromRawValue(${variable}->second, result.${variable});
   }`;
     })
     .join('\n  ');
@@ -757,8 +755,8 @@ module.exports = {
   generate(
     libraryName: string,
     schema: SchemaType,
+    moduleSpecName: string,
     packageName?: string,
-    assumeNonnull: boolean = false,
   ): FilesOutput {
     const fileName = 'Props.h';
 
@@ -802,9 +800,7 @@ module.exports = {
             const extendsImports = getExtendsImports(component.extendsProps);
             const imports = getLocalImports(component.props);
 
-            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
             extendsImports.forEach(allImports.add, allImports);
-            // $FlowFixMe[method-unbinding] added when improving typing for this parameters
             imports.forEach(allImports.add, allImports);
 
             const replacedTemplate = classTemplate

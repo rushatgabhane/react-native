@@ -8,6 +8,8 @@
  * @flow strict-local
  */
 
+'use strict';
+
 import type {ImageSource} from '../../../../../Libraries/Image/ImageSource';
 import type {ViewProps} from '../../../../../Libraries/Components/View/ViewPropTypes';
 import codegenNativeComponent from '../../../../../Libraries/Utilities/codegenNativeComponent';

@@ -10,7 +10,7 @@
 
 'use strict';
 
-const splitLayoutProps = require('../splitLayoutProps').default;
+const splitLayoutProps = require('../splitLayoutProps');
 
 test('splits style objects', () => {
   const style = {width: 10, margin: 20, padding: 30, transform: {scaleY: -1}};
@@ -44,10 +44,4 @@ test('does not copy values to both returned objects', () => {
       "paddingHorizontal": 10,
     }
   `);
-});
-
-test('returns null values if argument is null', () => {
-  const {outer, inner} = splitLayoutProps(null);
-  expect(outer).toBe(null);
-  expect(inner).toBe(null);
 });

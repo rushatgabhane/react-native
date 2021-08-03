@@ -12,9 +12,9 @@
 
 import type {
   Nullable,
-  NamedShape,
   SchemaType,
-  NativeModulePropertyShape,
+  NativeModulePropertySchema,
+  NativeModuleMethodParamSchema,
   NativeModuleReturnTypeAnnotation,
   NativeModuleParamTypeAnnotation,
   NativeModuleFunctionTypeAnnotation,
@@ -40,12 +40,12 @@ const HostFunctionTemplate = ({
   propertyName,
   jniSignature,
   jsReturnType,
-}: $ReadOnly<{
+}: $ReadOnly<{|
   hasteModuleName: string,
   propertyName: string,
   jniSignature: string,
   jsReturnType: JSReturnType,
-}>) => {
+|}>) => {
   return `static facebook::jsi::Value __hostFunction_${hasteModuleName}SpecJSI_${propertyName}(facebook::jsi::Runtime& rt, TurboModule &turboModule, const facebook::jsi::Value* args, size_t count) {
   return static_cast<JavaTurboModule &>(turboModule).invokeJavaMethod(rt, ${jsReturnType}, "${propertyName}", "${jniSignature}", args, count);
 }`;
@@ -54,13 +54,13 @@ const HostFunctionTemplate = ({
 const ModuleClassConstructorTemplate = ({
   hasteModuleName,
   methods,
-}: $ReadOnly<{
+}: $ReadOnly<{|
   hasteModuleName: string,
-  methods: $ReadOnlyArray<{
+  methods: $ReadOnlyArray<{|
     propertyName: string,
     argCount: number,
-  }>,
-}>) => {
+  |}>,
+|}>) => {
   return `
 ${hasteModuleName}SpecJSI::${hasteModuleName}SpecJSI(const JavaTurboModule::InitParams &params)
   : JavaTurboModule(params) {
@@ -75,7 +75,7 @@ ${methods
 const ModuleLookupTemplate = ({
   moduleName,
   hasteModuleName,
-}: $ReadOnly<{moduleName: string, hasteModuleName: string}>) => {
+}: $ReadOnly<{|moduleName: string, hasteModuleName: string|}>) => {
   return `  if (moduleName == "${moduleName}") {
     return std::make_shared<${hasteModuleName}SpecJSI>(params);
   }`;
@@ -86,17 +86,17 @@ const FileTemplate = ({
   include,
   modules,
   moduleLookups,
-}: $ReadOnly<{
+}: $ReadOnly<{|
   libraryName: string,
   include: string,
   modules: string,
   moduleLookups: $ReadOnlyArray<
-    $ReadOnly<{
+    $ReadOnly<{|
       hasteModuleName: string,
       moduleName: string,
-    }>,
+    |}>,
   >,
-}>) => {
+|}>) => {
   return `
 /**
  * ${'C'}opyright (c) Facebook, Inc. and its affiliates.
@@ -137,7 +137,7 @@ function translateReturnTypeToKind(
   }
 
   switch (realTypeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (realTypeAnnotation.name) {
         case 'RootTag':
           return 'NumberKind';
@@ -177,10 +177,8 @@ function translateReturnTypeToKind(
   }
 }
 
-type Param = NamedShape<Nullable<NativeModuleParamTypeAnnotation>>;
-
 function translateParamTypeToJniType(
-  param: Param,
+  param: NativeModuleMethodParamSchema,
   resolveAlias: AliasResolver,
 ): string {
   const {optional, typeAnnotation: nullableTypeAnnotation} = param;
@@ -196,7 +194,7 @@ function translateParamTypeToJniType(
   }
 
   switch (realTypeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (realTypeAnnotation.name) {
         case 'RootTag':
           return !isRequired ? 'Ljava/lang/Double;' : 'D';
@@ -209,7 +207,7 @@ function translateParamTypeToJniType(
     case 'StringTypeAnnotation':
       return 'Ljava/lang/String;';
     case 'BooleanTypeAnnotation':
-      return !isRequired ? 'Ljava/lang/Boolean;' : 'Z';
+      return !isRequired ? 'Ljava/lang/Boolean' : 'Z';
     case 'NumberTypeAnnotation':
       return !isRequired ? 'Ljava/lang/Double;' : 'D';
     case 'DoubleTypeAnnotation':
@@ -246,7 +244,7 @@ function translateReturnTypeToJniType(
   }
 
   switch (realTypeAnnotation.type) {
-    case 'ReservedTypeAnnotation':
+    case 'ReservedFunctionValueTypeAnnotation':
       switch (realTypeAnnotation.name) {
         case 'RootTag':
           return nullable ? 'Ljava/lang/Double;' : 'D';
@@ -261,7 +259,7 @@ function translateReturnTypeToJniType(
     case 'StringTypeAnnotation':
       return 'Ljava/lang/String;';
     case 'BooleanTypeAnnotation':
-      return nullable ? 'Ljava/lang/Boolean;' : 'Z';
+      return nullable ? 'Ljava/lang/Boolean' : 'Z';
     case 'NumberTypeAnnotation':
       return nullable ? 'Ljava/lang/Double;' : 'D';
     case 'DoubleTypeAnnotation':
@@ -287,7 +285,7 @@ function translateReturnTypeToJniType(
 }
 
 function translateMethodTypeToJniSignature(
-  property: NativeModulePropertyShape,
+  property: NativeModulePropertySchema,
   resolveAlias: AliasResolver,
 ): string {
   const {name, typeAnnotation} = property;
@@ -327,7 +325,7 @@ function translateMethodTypeToJniSignature(
 
 function translateMethodForImplementation(
   hasteModuleName: string,
-  property: NativeModulePropertyShape,
+  property: NativeModulePropertySchema,
   resolveAlias: AliasResolver,
 ): string {
   const [
@@ -357,8 +355,8 @@ module.exports = {
   generate(
     libraryName: string,
     schema: SchemaType,
+    moduleSpecName: string,
     packageName?: string,
-    assumeNonnull: boolean = false,
   ): FilesOutput {
     const nativeModules = getModules(schema);
 
@@ -421,7 +419,6 @@ module.exports = {
       })
       .join('\n');
 
-    // $FlowFixMe[missing-type-arg]
     const moduleLookups = Object.keys(nativeModules)
       .filter(hasteModuleName => {
         const module = nativeModules[hasteModuleName];
@@ -442,7 +439,7 @@ module.exports = {
         }
         return 0;
       })
-      .flatMap<{moduleName: string, hasteModuleName: string}>(
+      .flatMap<{|moduleName: string, hasteModuleName: string|}>(
         (hasteModuleName: string) => {
           const {moduleNames} = nativeModules[hasteModuleName];
           return moduleNames.map(moduleName => ({
@@ -452,12 +449,12 @@ module.exports = {
         },
       );
 
-    const fileName = `${libraryName}-generated.cpp`;
+    const fileName = `${moduleSpecName}-generated.cpp`;
     const replacedTemplate = FileTemplate({
       modules: modules,
       libraryName: libraryName.replace(/-/g, '_'),
       moduleLookups,
-      include: `"${libraryName}.h"`,
+      include: `"${moduleSpecName}.h"`,
     });
     return new Map([[`jni/${fileName}`, replacedTemplate]]);
   },

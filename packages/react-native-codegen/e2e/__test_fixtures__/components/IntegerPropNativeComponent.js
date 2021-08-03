@@ -8,6 +8,8 @@
  * @flow strict-local
  */
 
+'use strict';
+
 import type {
   WithDefault,
   Int32,

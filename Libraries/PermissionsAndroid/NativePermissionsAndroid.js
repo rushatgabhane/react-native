@@ -8,6 +8,8 @@
  * @flow strict
  */
 
+'use strict';
+
 import type {TurboModule} from '../TurboModule/RCTExport';
 import * as TurboModuleRegistry from '../TurboModule/TurboModuleRegistry';
 
@@ -41,9 +43,7 @@ export type PermissionType =
   | 'android.permission.RECEIVE_WAP_PUSH'
   | 'android.permission.RECEIVE_MMS'
   | 'android.permission.READ_EXTERNAL_STORAGE'
-  | 'android.permission.WRITE_EXTERNAL_STORAGE'
-  | 'android.permission.BLUETOOTH_CONNECT'
-  | 'android.permission.BLUETOOTH_SCAN';
+  | 'android.permission.WRITE_EXTERNAL_STORAGE';
 */
 
 export interface Spec extends TurboModule {

@@ -14,8 +14,7 @@ const {generateEventStructName} = require('./CppHelpers.js');
 
 import type {
   ComponentShape,
-  NamedShape,
-  EventTypeAnnotation,
+  EventObjectPropertyType,
   SchemaType,
 } from '../../CodegenSchema';
 
@@ -82,37 +81,16 @@ function generateEnumSetter(variableName, propertyName, propertyParts) {
 
 function generateSetters(
   parentPropertyName: string,
-  properties: $ReadOnlyArray<NamedShape<EventTypeAnnotation>>,
+  properties: $ReadOnlyArray<EventObjectPropertyType>,
   propertyParts: $ReadOnlyArray<string>,
 ): string {
   const propSetters = properties
     .map(eventProperty => {
-      const {typeAnnotation} = eventProperty;
-      switch (typeAnnotation.type) {
+      switch (eventProperty.type) {
         case 'BooleanTypeAnnotation':
-          return generateSetter(
-            parentPropertyName,
-            eventProperty.name,
-            propertyParts,
-          );
         case 'StringTypeAnnotation':
-          return generateSetter(
-            parentPropertyName,
-            eventProperty.name,
-            propertyParts,
-          );
         case 'Int32TypeAnnotation':
-          return generateSetter(
-            parentPropertyName,
-            eventProperty.name,
-            propertyParts,
-          );
         case 'DoubleTypeAnnotation':
-          return generateSetter(
-            parentPropertyName,
-            eventProperty.name,
-            propertyParts,
-          );
         case 'FloatTypeAnnotation':
           return generateSetter(
             parentPropertyName,
@@ -132,7 +110,7 @@ function generateSetters(
               auto ${propertyName} = jsi::Object(runtime);
               ${generateSetters(
                 propertyName,
-                typeAnnotation.properties,
+                eventProperty.properties,
                 propertyParts.concat([propertyName]),
               )}
 
@@ -140,7 +118,7 @@ function generateSetters(
             }
           `.trim();
         default:
-          (typeAnnotation.type: empty);
+          (eventProperty: empty);
           throw new Error('Received invalid event property type');
       }
     })
@@ -189,8 +167,8 @@ module.exports = {
   generate(
     libraryName: string,
     schema: SchemaType,
+    moduleSpecName: string,
     packageName?: string,
-    assumeNonnull: boolean = false,
   ): FilesOutput {
     const moduleComponents: ComponentCollection = Object.keys(schema.modules)
       .map(moduleName => {
